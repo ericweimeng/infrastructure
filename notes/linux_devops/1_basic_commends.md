@@ -110,8 +110,8 @@ Commands history for current shell
 				- '-' regular file
 				- 'd' directory file
 				- 'l' link file
-				- 'b' binary file
-				- 'c' charator file
+				- 'b' block file (可随机访问)
+				- 'c' charator file (有序访问)
 				- 'p' pipeline file
 				- 's' socket file
 			- following 9 digits
@@ -142,7 +142,12 @@ Commands history for current shell
 - locate the binary, source, and manual page files for a command
 
 #### whatis
-- search the whatis database for complete words
+- search the whatis database for complete words. (Command that lists summaries and related man pages based on search term)
+
+#### apropos
+
+- Command that searches man page for appearances of keyword provided, invoked by entering: apropos Same results can be obtained by: man -k
+- Arrow keys and vi key bindings can be used to navigate the man pages, Pressing the 'q' key will exit the man page.
 
 #### shutoff
 - halt, poweroff, shutdown, init 0
