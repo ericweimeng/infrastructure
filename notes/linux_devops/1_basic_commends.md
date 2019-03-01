@@ -159,3 +159,24 @@ Commands history for current shell
 - who
 - whoami
 - w
+
+####命令行展开
+  - /tmp{bin,sbin,usr/{bin,sbin}}
+
+####上一次命令执行状态结果
+- $?
+
+#### 文件查看类
+- cat, tac
+- more, less, tail, head
+
+#### 文件时间戳管理
+- touch
+
+#### metadata, data
+- 查看文件状态
+	- stat
+		- 三个时间戳
+			- access time (读取文件内容)
+			- modify time (改变文件内容)
+			- change time (元数据发生改变)
