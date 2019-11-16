@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Infrastructure](README.md)
+* [Architect and System Infrastructure](README.md)
 
 ## AWS
 
@@ -19,4 +19,9 @@
 ## Git
 
 * [Git](git/git.md)
+
+## Design
+
+* [System Design](design/system-design.md)
+* [Object-Oriented Design](object-oriented-design.md)
 
