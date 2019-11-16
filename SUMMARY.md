@@ -15,6 +15,7 @@
 ## Network
 
 * [IP Address](network/ip-address.md)
+* [Network Interfaces](network/network-interfaces.md)
 
 ## Git
 
