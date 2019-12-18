@@ -33,7 +33,9 @@ Google uses web crawlers to implement its search engine. Since each site is poss
 
 ![](../../.gitbook/assets/screen-shot-2019-12-16-at-6.17.38-pm.png)
 
-> To implement a producer and consumer pattern, you'll need to create two threads for each role \(consumers and producers\). Set the speed of each thread to process differently.
+{% hint style="info" %}
+To implement a producer and consumer pattern, you'll need to create two threads for each role \(consumers and producers\). Set the speed of each thread to process differently.
+{% endhint %}
 
 ### A Multi-threaded Web Crawler
 
@@ -49,4 +51,39 @@ Google uses web crawlers to implement its search engine. Since each site is poss
     * Try to lock and consume the resource once it's been released
   * semaphore \(信号量， 是一个整数\)
     * Allow multiple consumers to lock resource
+
+{% hint style="info" %}
+However, more threads do not necessarily mean more performance
+
+Why?
+
+* Context switch cost \(Single core CPU\)
+* Number of Thread \(port\) limitations
+* Network bottleneck for single machine
+{% endhint %}
+
+### A distributed Web Crawler
+
+#### Problem with Task Queue
+
+* Queue is a data structure stored in memory but we may have tons of tasks
+* Once the url has been pushed to queue, the order is fixed, but often the cases we crawl each url with different orders and frequency
+
+#### Design task table
+
+* Usually a task table contains tasks that each represents a url to crawl
+  * each task may contain a url, state, priority and available time
+
+![](../../.gitbook/assets/screen-shot-2019-12-17-at-10.34.29-pm.png)
+
+{% hint style="info" %}
+The way to see if the content crawled from a url is different from last time it's crawled is to hash the web content to get a hash value, with the hash value we can compare it with last value
+{% endhint %}
+
+* Get 1000 tasks per request from task table
+  * once a task is being processing by a crawler machine, it will be marked as working \(繁忙\) to represent current status, and will not be processed again by crawlers. Other tasks with status 'idle' can be distributed by task table and processed by crawlers
+
+![](../../.gitbook/assets/screen-shot-2019-12-17-at-10.27.21-pm.png)
+
+
 
