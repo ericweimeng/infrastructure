@@ -25,7 +25,7 @@ Google uses web crawlers to implement its search engine. Since each site is poss
 
 ### Crawling Algorithm
 
-* DFS
+* BFS
 
 ### A Single-Threaded Web Crawler
 
