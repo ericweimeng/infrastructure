@@ -77,7 +77,7 @@ Why?
 ![](../../.gitbook/assets/screen-shot-2019-12-17-at-10.34.29-pm.png)
 
 {% hint style="info" %}
-The way to see if the content crawled from a url is different from last time it's crawled is to hash the web content to get a hash value, with the hash value we can compare it with last value
+The way to see if the content crawled from a url is different from last time it's crawled is to **hash the web content** to get a hash value, with the hash value we can compare it with last value
 {% endhint %}
 
 * Get 1000 tasks per request from task table
@@ -85,5 +85,110 @@ The way to see if the content crawled from a url is different from last time it'
 
 ![](../../.gitbook/assets/screen-shot-2019-12-17-at-10.27.21-pm.png)
 
+#### Task table sharding
 
+![](../../.gitbook/assets/screen-shot-2019-12-18-at-9.38.55-pm.png)
+
+#### How to handle update for failure
+
+* Content Update
+* Crawling failure
+
+#### Solution
+
+Content Update
+
+* Exponential back-off. Basically for the first time, if it was successfully to crawl a website and after one week, the webpage does no change at all, then the crawling frequency would be changed to crawl after 2 week, so it works like
+  * No update for 1 week -&gt; crawl after 2 weeks
+  * No update for 2 week -&gt; crawl after 4 weeks
+  * No update for 4 week -&gt; crawl after 8 weeks
+  * ...........
+* The same machoism works the same but in reverse when it comes to websites which are frequently updating 
+
+Crawling failure
+
+#### Use quota
+
+In all those urls, there may be many urls that belong to one single domain \(websites\), we do not want all resources are spent on that single domain just because there are more urls to crawl compared to others.
+
+![](../../.gitbook/assets/screen-shot-2019-12-18-at-9.54.34-pm.png)
+
+#### multi-region
+
+Use servers close to the host of the website
+
+## Summary
+
+### senario
+
+* How many pages
+  * crawl **1.6m web pages per second** \(1,000,000,000,000 / 7 / 86400 \)
+    * 1 trilion web pages
+* How often \(crawling frequency\)
+  * crawl all of them **every week**
+* How large \(space\)
+  * 10p \(petabyte\) web page storage \(Distributed System\)
+    * average of a web page 10k
+
+### Service
+
+* Crawler
+* Task service
+* Storage service
+
+### Storage
+
+* Use database to store tasks
+* BigTable to store webpages
+
+### Scale
+
+* Single -&gt; multi -&gt; distributed
+* queue -&gt; table
+* db sharding
+* content update/crawling failure handling
+* Avoid dead cycle, use quota
+* multi-region
+
+## How to design a Typeahead
+
+Type ahead of you, searching suggestions
+
+### Scenario
+
+* Given a prefix -&gt; get top n search keywords
+* DAU \(daily active user\): 500M
+* Search: 4 \* 6 \* 500M = 12B \(every user searches 6 times, types 4 letters\)
+* QPS = 12B / 86400 ~= 138k
+* Peak QPS = QPS \* 2 ~= 276k
+
+### Service
+
+We noticed that the QPS is really high for this system.
+
+* Query Service
+* Data Collection Service
+  * collecting, sorting, processing and storing keywords that user searched
+  * Updating on a daily/weekly/any reasonable frequency
+    * Summarize searched keywords for the past day/week/any reasonable frequency
+
+![](../../.gitbook/assets/screen-shot-2019-12-18-at-10.23.19-pm.png)
+
+### Storage
+
+#### Query Service
+
+* what kinds of data
+* do we need to store
+* the naive way
+
+![](../../.gitbook/assets/screen-shot-2019-12-18-at-10.31.09-pm.png)
+
+#### how to query the database
+
+* query payload {key}
+* query sql
+  * select \* from hit\_stats where keyword like \`${key}%\` order by hit\_count DESC limit 10
+    * this is time consuming
+* therefore we need a prefix table
 
