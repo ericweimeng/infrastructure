@@ -24,6 +24,6 @@
 ## Design
 
 * [System Design](design/system-design/README.md)
-  * [Crawlers, Typehead](design/system-design/crawlers-typehead.md)
+  * [Crawlers, Typeahead](design/system-design/crawlers-typehead.md)
 * [Object-Oriented Design](object-oriented-design.md)
 

@@ -1,4 +1,4 @@
-# Crawlers, Typehead
+# Crawlers, Typeahead
 
 ## Design a Web Crawler \(Google\)
 
@@ -184,6 +184,8 @@ We noticed that the QPS is really high for this system.
 
 ![](../../.gitbook/assets/screen-shot-2019-12-18-at-10.31.09-pm.png)
 
+Above table is the table we collect hit-count every day, and this table is going to be transformed into a trie data structure
+
 #### how to query the database
 
 * query payload {key}
@@ -191,4 +193,23 @@ We noticed that the QPS is really high for this system.
   * select \* from hit\_stats where keyword like \`${key}%\` order by hit\_count DESC limit 10
     * this is time consuming
 * therefore we need a prefix table
+
+![](../../.gitbook/assets/screen-shot-2019-12-19-at-5.37.24-pm.png)
+
+![](../../.gitbook/assets/screen-shot-2019-12-19-at-5.42.10-pm.png)
+
+![](../../.gitbook/assets/screen-shot-2019-12-19-at-5.53.15-pm.png)
+
+### Where does raw data come from
+
+* Essentially asking, what does DataCollectionService do
+
+![](../../.gitbook/assets/screen-shot-2019-12-19-at-6.00.42-pm.png)
+
+When traffic going to query-service machine, the trie in it will be locked for query. The DataCollectionService would not update trie lively.
+
+### How to qualify this system
+
+* Key metric: response time
+* Bottom line: result quality
 
