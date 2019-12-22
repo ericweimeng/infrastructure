@@ -211,5 +211,24 @@ When traffic going to query-service machine, the trie in it will be locked for q
 ### How to qualify this system
 
 * Key metric: response time
+  * use cache \(browser cache\) in the front end to reduce response time
 * Bottom line: result quality
+
+### When trie gets to large for one machine
+
+![](../../.gitbook/assets/screen-shot-2019-12-20-at-9.07.08-pm.png)
+
+#### Store trie across multiple machines
+
+* Use consistent hashing to decide which machine a particular string belongs to
+  * it works like getting the hash value for a prefix and use that value as the id of a machine, and store information about the prefix on that machine
+
+![](../../.gitbook/assets/screen-shot-2019-12-20-at-9.10.05-pm.png)
+
+![](../../.gitbook/assets/screen-shot-2019-12-20-at-9.12.13-pm.png)
+
+### How to reduce log file
+
+* For prefixes that have relatively higher searching volumes, we pick a random number each time and only when it is a certain number then we log it.
+  * like amazon, say if we have 20b each day, then every time we pick a random number from 1 - 1000 and only log it when we get number 1
 

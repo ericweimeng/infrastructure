@@ -25,5 +25,6 @@
 
 * [System Design](design/system-design/README.md)
   * [Crawlers, Typeahead](design/system-design/crawlers-typehead.md)
+  * [Location-Based Service](design/system-design/location-based-service.md)
 * [Object-Oriented Design](object-oriented-design.md)
 
