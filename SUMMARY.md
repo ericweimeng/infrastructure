@@ -28,3 +28,8 @@
   * [Location-Based Service](design/system-design/location-based-service.md)
 * [Object-Oriented Design](object-oriented-design.md)
 
+## Language
+
+* [Python](language/python/README.md)
+  * [Knowledge & Experience Base](language/python/knowledge-and-experience-base.md)
+
