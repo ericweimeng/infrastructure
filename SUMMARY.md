@@ -31,7 +31,7 @@
 ## Language
 
 * [Python](language/python/README.md)
-  * [Knowledge & Experience Base](language/python/knowledge-and-experience-base.md)
+  * [Data Structure](language/python/data-structure.md)
 
 ## Database
 
