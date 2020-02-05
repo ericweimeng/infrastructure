@@ -5,6 +5,7 @@
 ## AWS
 
 * [AWS Security Essentials](aws/aws-security-essentials.md)
+* [SQS](aws/sqs.md)
 * [Bash](bash/README.md)
   * [Grep](bash/grep.md)
 
@@ -37,4 +38,8 @@
 ## Database
 
 * [Mysql](database/mysql.md)
+
+## Debugging
+
+* [Debug](debugging/debug.md)
 
