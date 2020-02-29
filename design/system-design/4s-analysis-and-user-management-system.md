@@ -1,11 +1,12 @@
 # 4S Analysis & User Management System
 
-## **系统分析和设计** 
+## **System Design**
 
-**\#\#\#\# System Design, OO Design, API Design**
+### **System Design, OO Design, API Design**
 
-**- HR 通知有这样的面试时要问清具体是什么类型的design**  
-
+{% hint style="info" %}
+HR 通知有这样的面试时要问清具体是什么类型的design
+{% endhint %}
 
 **- 系统设计面试的一般评分标准**
 
