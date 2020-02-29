@@ -26,6 +26,7 @@
 
 * [Object-Oriented Design](design/object-oriented-design.md)
 * [System Design](design/system-design/README.md)
+  * [4S Analysis & User Management System](design/system-design/4s-analysis-and-user-management-system.md)
   * [Consistent Hashing & Design Tiny URL](design/system-design/consistent-hashing-and-design-tiny-url.md)
   * [Crawlers, Typeahead](design/system-design/crawlers-typehead.md)
   * [Location-Based Service](design/system-design/location-based-service.md)
