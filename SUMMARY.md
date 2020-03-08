@@ -34,6 +34,7 @@
 ## Language
 
 * [Python](language/python/README.md)
+  * [Built-ins](language/python/built-ins.md)
   * [Data Structure](language/python/data-structure.md)
 
 ## Database
