@@ -61,5 +61,49 @@ For solving single point failure.
 
 ![](../../.gitbook/assets/screen-shot-2020-01-31-at-8.45.58-pm.png)
 
-## Consisten Hashing
+### Consistent Hashing
+
+* Treat the entire interval as a ring
+* There are  2\*\*64 - 1 points on this ring representing either a machine or a data
+* Micro shards / virtual nodes
+  * One physical machine maps to 1000 micro shards or virtual nodes
+  * how
+    * one idea is to use '.1', like 'memcache-01.1',  'memcache-01.2'...'memcache-01.1000'
+* Every virtual node maps to a point on hash
+* Every time a new machine is added, 1000 points on ring will be randomly put as virtual nodes
+* When need to calculate which machine a key should be mapped to
+  * get the hash value for this key --&gt; a value in 0 ~ 2\*\*64 - 1, which maps to a point on the ring
+  * clockwise to find the first virtual node
+  * the machine that this virtual node belongs to is the server that this key should maps to
+* Data migration for adding a new machine
+  * 1000 virtual nodes ask data from the first node it found clockwise on the ring
+* Data structure used to achieve this
+  * red-black tree
+* The purpose for this algorithm is to make sure every physical machine can take part in sharing parts of its entire data to the new machine, therefore the burden on each machine while doing the data migration could be mitigated
+
+## Backup vs Replica
+
+### Backup
+
+* Periodical, like data backup every night
+* When data got lost, usually it can only be recovered to a certain point of time
+* Backup is not used as online data service, it is not helping read access
+
+### Replica
+
+* real-time, when data is being write to the database, it will be copied and stored as many replicas
+* When data got lost, the system can recover data from other replicas
+* Replica is used as online data service, accepting read requests
+
+### Master - Slave
+
+* Write Ahead Log
+  * Any operations on SQL database will recorded as log
+    * for example, data A is changed from C to D at time B
+  * Slave tells master that it is alive
+  * Every time there's operation on master, it will ask slave to read log
+  * It has delay when changes reflected on slave
+* Mater is down
+  * Promote one slave into a master, accepting read + write
+  * May cause data lost and inconsistency
 
