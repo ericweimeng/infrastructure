@@ -106,4 +106,24 @@ For solving single point failure.
 * Mater is down
   * Promote one slave into a master, accepting read + write
   * May cause data lost and inconsistency
+* Disadvantages
+  * Write operations are not amortized
+    * But can be resolved by sharding, multiple machines for write
+  * There's delay between write operations reflected in slave
+    * But when you want to get a number that is not necessary to be that accurate, like upvotes, you can read your data from slave
 
+#### SQL vs NoSQL in Replica
+
+SQL
+
+* built-in replica mechanism is Mater / Slave
+* manual replica mechanism is to store three copies on ring of consistent hashing
+
+NoSQL
+
+* built-in replica mechanism is to store copies on the ring of consistent hashing
+
+Query Data
+
+1. if the data requested do not need to be accurate, then it broadcasts the request to all nodes, and get the data from the server that responded quickest.
+2. 
