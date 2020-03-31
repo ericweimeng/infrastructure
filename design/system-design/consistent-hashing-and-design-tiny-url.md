@@ -126,4 +126,5 @@ NoSQL
 Query Data
 
 1. if the data requested do not need to be accurate, then it broadcasts the request to all nodes, and get the data from the server that responded quickest.
-2. 
+2. if the data requested needs to be accurate, then it broadcasts the request to all nodes, and wait for at least two nodes return data
+
