@@ -30,6 +30,7 @@
   * [Consistent Hashing & Design Tiny URL](design/system-design/consistent-hashing-and-design-tiny-url.md)
   * [Crawlers, Typeahead](design/system-design/crawlers-typehead.md)
   * [Location-Based Service](design/system-design/location-based-service.md)
+  * [Distributed Systems](design/system-design/distributed-systems.md)
 
 ## Language
 
