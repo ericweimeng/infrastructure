@@ -216,3 +216,5 @@ func longToShort(long_url):
             return short_url
 ```
 
+![](../../.gitbook/assets/screen-shot-2020-04-04-at-9.32.08-pm.png)
+
