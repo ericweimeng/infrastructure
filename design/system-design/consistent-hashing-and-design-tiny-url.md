@@ -128,3 +128,91 @@ Query Data
 1. if the data requested do not need to be accurate, then it broadcasts the request to all nodes, and get the data from the server that responded quickest.
 2. if the data requested needs to be accurate, then it broadcasts the request to all nodes, and wait for at least two nodes return data
 
+## Tiny / Short URL
+
+### Scenario
+
+![](../../.gitbook/assets/screen-shot-2020-04-04-at-7.01.48-pm.png)
+
+#### Things need to check
+
+* Does long and short URLs have to be on a one to one relation
+  * usually long -&gt; short can be one to many, but short -&gt; long has to be one to one
+* Does it need to release that short URL if the URL has been used for a long time
+  * better not
+
+#### Requirements
+
+* DAU
+  * 100M
+* Calculate QPS for generating one tiny URL
+  * Imagine every user posts 0.1 post per day
+  * Average Write QPS = 100M \* 0.1/86400 ~ 100
+  * Peak Write QPS = 100 \* 3 = 300
+* Calculate QPS for clicking the tiny URL
+  * Every user clicks the tiny URL
+  * Average read QPS = 100M \* 1 / 86400 ~ 1k
+  * Peak read QPS = 
+* Calculate new tiny URL generated every day:
+  * 100M \* 0.1 ~ 10M
+  * Every URL consumes 100 ~ total 1G
+  * 1T disk can be used for 3 years
+* 3k QPS
+  * one ssd + mysql can handle
+
+### Service
+
+* One service
+  * URLService.encode\(long\_url\)
+  * URLService.decode\(short\_url\)
+* Endpoint
+  * GET /&lt;short\_url&gt;
+    * return a http redirect response
+  * POST /data/shorten
+    * Data = {url: http://xxxx}
+    * Return short url
+
+{% hint style="info" %}
+301 Moved Permanently, the browser can cache the url
+
+302 Moved Temporally, next time the request still has to go to the redirect server 
+{% endhint %}
+
+### Storage
+
+* SQL or NoSQL
+  * Support Transaction
+    * No -&gt; NoSQL \(NoSQL does not support transaction\)
+  * Support rich query?
+    * No -&gt; NoSQL
+  * Code complexity
+    * Not complicated
+  * QPS requirements -&gt; 3k, not too high, and can use Cache, write operation is also low. SQL
+  * Scalability requirements -&gt; not too high
+    * Engineer has to scale it by using sharding and replica for SQL DB
+    * NoSQL has all handy feature for scaling
+  * Needs Sequential ID -&gt; depends on your algorithm
+    * SQL provides auto-incremented sequential ID
+    * NoSQL id is not sequential
+  * If writes heavy, then the bottleneck is going to be write lock \(for example on this auto-increment id\)
+* How to transform a long URL to a short one
+  * Hash \(naive\)
+  * randomly generate a string and check if db has already had one
+
+![Randomly Generate short URL](../../.gitbook/assets/screen-shot-2020-04-04-at-9.28.20-pm.png)
+
+* Base62
+  * 0-9, a-z, A-Z
+
+![Base62](../../.gitbook/assets/screen-shot-2020-04-04-at-9.27.12-pm.png)
+
+```python
+# generate short url randomly and db deduplication
+func longToShort(long_url):
+    while true:
+        short_url = randomShortURL()
+        if database.filter(short_url) is None:
+            database.update(short_url, long_url)
+            return short_url
+```
+

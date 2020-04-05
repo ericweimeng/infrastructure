@@ -68,9 +68,129 @@ Usually a big file is merged from many files
   * Disadvantages
     * Waste space for small files
 
-### Scale
-
 #### Scale about the storage
 
 ![](../../.gitbook/assets/screen-shot-2020-04-03-at-10.25.36-pm.png)
+
+![](../../.gitbook/assets/screen-shot-2020-04-04-at-3.06.39-pm.png)
+
+{% hint style="info" %}
+Usually, the offset will be stored on chuck server
+{% endhint %}
+
+#### What is the estimated size of the meta data for large files
+
+* For example, like 10P
+  * usually, 64MB chunk needs 64 bytes
+  * 16 \* 10 ^ 6 chunks need 10G meta data -&gt; can be stored on one machine 
+
+#### How to write a file
+
+* Since the chunk is used to store large files, it is also used as the unit for transmitting and writing
+* Client needs to break the file down, master handles the entire system, and cannot handle this breakdown for files.
+
+![](../../.gitbook/assets/screen-shot-2020-04-04-at-3.24.07-pm.png)
+
+![](../../.gitbook/assets/screen-shot-2020-04-04-at-3.26.42-pm.png)
+
+#### How to modify the file
+
+* Delete the original file and rewrite the entire file
+
+{% hint style="info" %}
+For most of the distributed file system, it is one time to write, many time to read
+{% endhint %}
+
+{% hint style="info" %}
+Usually, things like log, raw or intermediate data for map-reduce will be stored to DFS
+{% endhint %}
+
+#### How to read a file
+
+* Send request to master, master will tell client where are all those chunks located \(through index list\)
+
+#### Master
+
+* Store metadata
+* Store map \(file name + chunk index -&gt; chunk server\)
+  * find chunk server when read
+  * find idle server when write
+
+### Scale
+
+#### Scale on failure and recover
+
+How to identify if a chunk on the disk is broken
+
+* Checksum
+  * check one bit error
+  * size -&gt; 4 bytes 32 bits
+  * each chunk has a checksum
+  * when to write checksum
+    * every time when it finishes writing a chunk
+  * when to read and check checksum
+    * when trying to read a chunk
+    * calculate current checksum
+    * comparing if current checksum is equal to previous checksum
+
+How to avoid chunk data loss when a chuck server is down or failing
+
+* Replica
+
+What are the strategies to pick a chunk server
+
+* Least Recently Used \(LRU\)
+* Low disk usages
+* backup vs replica
+  * backup offline, replica online
+
+How to recover when a chunk is broken
+
+* Ask master for help
+
+![](../../.gitbook/assets/screen-shot-2020-04-04-at-4.25.46-pm.png)
+
+How to find a chunk server is down
+
+* Heart beat every three seconds, slave -&gt; master
+
+#### Scale on write
+
+A ok way:
+
+![](../../.gitbook/assets/screen-shot-2020-04-04-at-4.36.31-pm.png)
+
+Disadvantage of above structure:
+
+* Client gets heavy workloads
+
+![](../../.gitbook/assets/screen-shot-2020-04-04-at-4.39.41-pm.png)
+
+How to find that representative server
+
+* the closet/fastest one
+* idle server \(balance traffic\)
+* is not fixed
+
+How to solve chunk server failure
+
+* Server who fails to write will speak loudly to notify representative server
+* And once client gets notification on failure, it will retry the same request to master
+* master will replace the failed one with a replica chunk server, and points to this new server
+
+![](../../.gitbook/assets/screen-shot-2020-04-04-at-4.51.54-pm.png)
+
+![Client Retry](../../.gitbook/assets/screen-shot-2020-04-04-at-4.53.01-pm.png)
+
+### Summary
+
+![](../../.gitbook/assets/screen-shot-2020-04-04-at-4.59.16-pm.png)
+
+## Design Bigtable
+
+What is a Bigtable
+
+* Throughput of NoSQL &gt;&gt;&gt; Relational SQL
+
+
 
