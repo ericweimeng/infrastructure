@@ -152,10 +152,10 @@ Query Data
 * Calculate QPS for clicking the tiny URL
   * Every user clicks the tiny URL
   * Average read QPS = 100M \* 1 / 86400 ~ 1k
-  * Peak read QPS = 
+  * Peak read QPS = 3 \* 1k ~= 3k
 * Calculate new tiny URL generated every day:
   * 100M \* 0.1 ~ 10M
-  * Every URL consumes 100 ~ total 1G
+  * Every URL consumes 100KB ~ total 1G \(maybe 50?\)
   * 1T disk can be used for 3 years
 * 3k QPS
   * one ssd + mysql can handle
