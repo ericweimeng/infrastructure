@@ -26,7 +26,8 @@
 
 * [Object-Oriented Design](design/object-oriented-design.md)
 * [System Design](design/system-design/README.md)
-  * [Design Related Concepts](design/system-design/design-related-concepts.md)
+  * [Design Related Concepts](design/system-design/design-related-concepts/README.md)
+    * [Push vs Pull Architectures](design/system-design/design-related-concepts/push-vs-pull-architectures.md)
   * [4S Analysis & User Management System](design/system-design/4s-analysis-and-user-management-system.md)
   * [Consistent Hashing & Design Tiny URL](design/system-design/consistent-hashing-and-design-tiny-url.md)
   * [Crawlers, Typeahead](design/system-design/crawlers-typehead.md)
