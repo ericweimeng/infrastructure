@@ -25,6 +25,7 @@
 ## Design
 
 * [Object-Oriented Design](design/object-oriented-design.md)
+* [Database Design](design/database-design.md)
 * [System Design](design/system-design/README.md)
   * [Design Related Concepts](design/system-design/design-related-concepts/README.md)
     * [Push vs Pull Architectures](design/system-design/design-related-concepts/push-vs-pull-architectures.md)
@@ -33,6 +34,7 @@
   * [Crawlers, Typeahead](design/system-design/crawlers-typehead.md)
   * [Location-Based Service](design/system-design/location-based-service.md)
   * [Distributed Systems](design/system-design/distributed-systems.md)
+  * [Design Facebook Messager](design/system-design/design-facebook-messager.md)
 
 ## Language
 
