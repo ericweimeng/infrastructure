@@ -218,3 +218,19 @@ func longToShort(long_url):
 
 ![](../../.gitbook/assets/screen-shot-2020-04-04-at-9.32.08-pm.png)
 
+### Scale
+
+#### Speed up
+
+![](../../.gitbook/assets/screen-shot-2020-04-06-at-10.20.20-pm.png)
+
+![](../../.gitbook/assets/screen-shot-2020-04-06-at-10.39.27-pm.png)
+
+![](../../.gitbook/assets/screen-shot-2020-04-06-at-10.50.22-pm.png)
+
+![](../../.gitbook/assets/screen-shot-2020-04-06-at-10.51.46-pm.png)
+
+{% hint style="info" %}
+How to choose sharding key largely depends on how you want to search in db.
+{% endhint %}
+
