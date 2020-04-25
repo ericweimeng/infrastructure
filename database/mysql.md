@@ -10,6 +10,8 @@ The second layer includes the code for query parsing, analysis, optimization, ca
 
 The third layer contains the storage engines. They are responsible for storing and retrieving all data stored “in” MySQL.The server communicates with them through the _storage engine API_. This interface hides differences between storage engines and makes them largely transparent at the query layer. The API contains a couple of dozen low-level functions that perform operations such as “begin a transaction” or “fetch the row that has this primary key.” The storage engines don’t parse SQL or communicate with each other; they simply respond to requests from the server.
 
+## Index
+
 ### Clustered Index
 
 Typically, an [index](https://www.mysqltutorial.org/mysql-index/) is a separate data structure such as B-Tree that stores the key values used for faster lookups.
