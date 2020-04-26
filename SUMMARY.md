@@ -35,6 +35,7 @@
   * [Location-Based Service](design/system-design/location-based-service.md)
   * [Distributed Systems](design/system-design/distributed-systems.md)
   * [Design Facebook Messager](design/system-design/design-facebook-messager.md)
+  * [Designing Facebook’s Newsfeed](design/system-design/designing-facebooks-newsfeed.md)
 
 ## Language
 
