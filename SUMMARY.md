@@ -30,6 +30,7 @@
   * [Design Related Concepts](design/system-design/design-related-concepts/README.md)
     * [Push vs Pull Architectures](design/system-design/design-related-concepts/push-vs-pull-architectures.md)
   * [4S Analysis & User Management System](design/system-design/4s-analysis-and-user-management-system.md)
+  * [System Design Interviews: A step by step guide](design/system-design/system-design-interviews-a-step-by-step-guide.md)
   * [Consistent Hashing & Design Tiny URL](design/system-design/consistent-hashing-and-design-tiny-url.md)
   * [Designing a URL Shortening service like TinyURL](design/system-design/designing-a-url-shortening-service-like-tinyurl.md)
   * [Crawlers, Typeahead](design/system-design/crawlers-typehead.md)
