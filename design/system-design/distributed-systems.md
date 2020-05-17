@@ -98,7 +98,7 @@ Usually, the offset will be stored on chuck server
 * Delete the original file and rewrite the entire file
 
 {% hint style="info" %}
-For most of the distributed file system, it is one time to write, many time to read
+For most of the distributed file system, it is one time write, many time read
 {% endhint %}
 
 {% hint style="info" %}

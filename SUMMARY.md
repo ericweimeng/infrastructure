@@ -4,6 +4,7 @@
 
 ## AWS
 
+* [Cloud](aws/cloud.md)
 * [AWS Security Essentials](aws/aws-security-essentials.md)
 * [SQS](aws/sqs.md)
 * [Bash](bash/README.md)
@@ -29,6 +30,8 @@
 * [System Design](design/system-design/README.md)
   * [Design Related Concepts](design/system-design/design-related-concepts/README.md)
     * [Push vs Pull Architectures](design/system-design/design-related-concepts/push-vs-pull-architectures.md)
+    * [Client Side & Server Side Rendering](design/system-design/design-related-concepts/client-side-and-server-side-rendering.md)
+    * [Scalability](design/system-design/design-related-concepts/scalability.md)
   * [4S Analysis & User Management System](design/system-design/4s-analysis-and-user-management-system.md)
   * [System Design Interviews: A step by step guide](design/system-design/system-design-interviews-a-step-by-step-guide.md)
   * [Consistent Hashing & Design Tiny URL](design/system-design/consistent-hashing-and-design-tiny-url.md)
@@ -57,6 +60,7 @@
 * [Python](language/python/README.md)
   * [Built-ins](language/python/built-ins.md)
   * [Data Structure](language/python/data-structure.md)
+  * [Concurrency](language/python/concurrency.md)
 
 ## Database
 
