@@ -402,3 +402,145 @@ if __name__ == "__main__":
 
 ```
 
+## Deadlock, Liveness & Reentrant Locks
+
+We discuss important concurrency concepts such as deadlock, liveness, live-lock, starvation and reentrant locks in depth. Also included are executable code examples for illustrating these concepts.
+
+#### Deadlock and Liveness
+
+Logical follies committed in multithreaded code, while trying to avoid race conditions and guarding critical sections, can lead to a host of subtle and hard to find bugs and side-effects. Some of these incorrect usage patterns have their specific names and are discussed below.
+
+**Deadlock**
+
+Deadlocks occur when two or more threads aren't able to make any progress because the resource required by the first thread is held by the second and the resource required by the second thread is held by the first.
+
+**Liveness**
+
+Ability of a program or an application to execute in a timely manner is called liveness. If a program experiences a deadlock then it's not exhibiting liveness.
+
+**Live-Lock**
+
+A live-lock occurs when two threads continuously react in response to the actions by the other thread without making any real progress. The best analogy is to think of two persons trying to cross each other in a hallway. John moves to the left to let Arun pass, and Arun moves to his right to let John pass. Both block each other now. John sees he's blocking Arun again and moves to his right and Arun moves to his left seeing he's blocking John. They never cross each other and keep blocking each other. This scenario is an example of a live-lock. A process seems to be running and not deadlocked but in reality, isn't making any progress.
+
+**Starvation**
+
+Other than a deadlock, an application thread can also experience starvation when it never gets CPU time or access to shared resources. Other **greedy** threads continuously hog shared system resources not letting the starving thread make any progress.
+
+**Deadlock Example**
+
+Consider the pseudocode below:
+
+```python
+void increment(){
+ 
+  acquire MUTEX_A
+  acquire MUTEX_B
+    // do work here
+  release MUTEX_B
+  release MUTEX_A
+    
+}
+ 
+ 
+void decrement(){
+  
+  acquire MUTEX_B
+  acquire MUTEX_A
+    // do work here
+  release MUTEX_A
+  release MUTEX_B
+    
+}
+```
+
+The above code can potentially result in a deadlock. Note that deadlock may not always happen, but for certain execution sequences, deadlock can occur. Consider the execution sequence below that ends up in a deadlock:
+
+```text
+T1 enters function increment
+ 
+T1 acquires MUTEX_A
+ 
+T1 gets context switched by the operating system
+ 
+T2 enters function decrement
+ 
+T2 acquires MUTEX_B
+ 
+both threads are blocked now
+```
+
+Thread **T2** can't make progress as it requires **MUTEX\_A** which is being held by **T1**. Now when **T1** wakes up, it can't make progress as it requires **MUTEX\_B** and that is being held up by **T2**. This is a classic text-book example of a deadlock.
+
+You can come back to the examples presented below as they require an understanding of the `Lock` and `RLock` classes. Or you can just run the examples and observe the output for now to get a high-level overview of the concepts we discussed in this lesson.
+
+If you run the code snippet below, you'll see that the statements for acquiring locks: **lock1** and **lock2** print out but there's no progress after that and the execution times out. In this scenario, the deadlock occurs because the locks are being acquired in a nested fashion.
+
+```python
+from threading import *
+import time
+
+def thread_A(lock1, lock2):
+    lock1.acquire()
+    print("{0} acquired lock1".format(current_thread().getName()))
+    time.sleep(1)
+    lock2.acquire()
+    print("{0} acquired both locks".format(current_thread().getName()))
+
+
+def thread_B(lock1, lock2):
+    lock2.acquire()
+    print("{0} acquired lock2".format(current_thread().getName()))
+    time.sleep(1)
+    lock1.acquire()
+    print("{0} acquired both locks".format(current_thread().getName()))
+
+
+if __name__ == "__main__":
+
+    lock1 = Lock()
+    lock2 = Lock()
+
+    Thread(target=thread_A, args=(lock1, lock2)).start()
+    Thread(target=thread_B, args=(lock1, lock2)).start()
+```
+
+**Reentrant Lock**
+
+Reentrant locks allow for re-locking or re-entering of a synchronization lock. If a synchronization primitive doesn't allow reacquisition of itself by a thread that has already acquired it, then such a thread would block as soon as it attempts to reacquire the primitive a second time.
+
+This is best explained with an example. Consider the NonReentrant class below, where we are using an ordinary `Lock` object that results in a deadlock. The execution of the code widget would time out when it is run.
+
+```python
+from threading import *
+
+
+if __name__ == "__main__":
+  ordinary_lock = Lock()
+
+  ordinary_lock.acquire()
+  ordinary_lock.acquire()
+  
+  print("{0} exiting".format(current_thread().getName()))
+
+  ordinary_lock.release()
+  ordinary_lock.release()
+```
+
+The above example works when we change the lock from an instance of `Lock` to `RLock`. The latter allows reentry by a thread already holding the lock and is thus called a **reentrant lock**.
+
+```python
+from threading import *
+
+
+if __name__ == "__main__":
+  ordinary_lock = RLock()
+  ordinary_lock.acquire()
+  ordinary_lock.acquire()
+  
+  print("{0} exiting".format(current_thread().getName()))
+
+  ordinary_lock.release()
+  ordinary_lock.release()
+
+```
+
