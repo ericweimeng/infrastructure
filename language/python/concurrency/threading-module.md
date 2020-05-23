@@ -270,9 +270,15 @@ if __name__ == "__main__":
     t2.join()
 ```
 
+## RLock
+
 #### Non-blocking lock
 
+This lesson explains the reentrant lock in python's threading module.
+
 You might want to do something with a resource if it is not currently locked, but if it is locked you don't bother and do something else.
+
+#### Introduction
 
 ```python
 import threading
@@ -297,19 +303,15 @@ for i in range(5):
   threading.Thread(target=worker, name=f'worker-{i}', args=(tasks,)).start()
 ```
 
-Notice that if blocking set to true, '... is working' will not be printed out meaning everyone blocks there wait for the release of the lock. If it is set to False, then if it's failed to acquire a lock, it can continue execute code after the critical section.
-
-## RLock
-
-This lesson explains the reentrant lock in python's threading module.
-
-#### Introduction
-
 A reentrant lock is defined as a lock which can be reacquired by the same thread. A `RLock` object carries the notion of ownership. If a thread acquires a `RLock` object, it can chose to reacquire it as many times as possible. Consider the following snippet:
+
+Notice that if blocking set to true, '... is working' will not be printed out meaning everyone blocks there wait for the release of the lock. If it is set to False, then if it's failed to acquire a lock, it can continue execute code after the critical section.
 
 **Reentrant lock**
 
-```python
+## RLock
+
+```text
 # create a reentrant lock
 rlock = RLock()
  
@@ -323,7 +325,11 @@ rlock.release()
  
 ```
 
+This lesson explains the reentrant lock in python's threading module.
+
 In contrast to `Lock`, the reentrant lock is acquired twice in the above snippet without blocking. Note that it is imperative to release the lock as many times as it is locked, otherwise the lock remains in locked state and any other threads attempting to acquire the lock get blocked. This is shown with an example below:
+
+#### Introduction
 
 ```python
 from threading import RLock
@@ -352,7 +358,11 @@ thread.start()
 thread.join()
 ```
 
+A reentrant lock is defined as a lock which can be reacquired by the same thread. A `RLock` object carries the notion of ownership. If a thread acquires a `RLock` object, it can chose to reacquire it as many times as possible. Consider the following snippet:
+
 If you uncomment **line 20** in the above code widget the child thread would be able to execute. We can have arbitrary nesting of acquiring and releasing of the reentrant lock. For instance, the following would work:
+
+**Reentrant lock**
 
 ```text
 rlock = RLock()
@@ -368,7 +378,99 @@ rlock.release()
 rlock.release()
 ```
 
+```python
+# create a reentrant lock
+rlock = RLock()
+ 
+# acquire the lock twice
+rlock.acquire()
+rlock.acquire()
+ 
+# release the lock twice
+rlock.release()
+rlock.release()
+ 
+```
+
 The nested acquire/release calls are tracked internally by recursion level which is incremented on every `acquire()` and decremented on every `release()` by the same thread. When the recursion level is zero, the reentrant lock is in unlocked state.
+
+In contrast to `Lock`, the reentrant lock is acquired twice in the above snippet without blocking. Note that it is imperative to release the lock as many times as it is locked, otherwise the lock remains in locked state and any other threads attempting to acquire the lock get blocked. This is shown with an example below:
+
+**Ownership**
+
+```python
+from threading import RLock
+from threading import Thread
+
+
+def child_task():
+    rlock.acquire()
+    print("child task executing")
+    rlock.release()
+
+
+rlock = RLock()
+
+rlock.acquire()
+rlock.acquire()
+
+rlock.release()
+
+# UNCOMMENT THE FOLLOWING LINE TO MAKE THE
+# PROGRAM EXIT NORMALLY.
+# rlock.release()
+
+thread = Thread(target=child_task)
+thread.start()
+thread.join()
+```
+
+As explained, each reentrant lock is owned by some thread when in the locked state. Only the owner thread is allowed to exercise a `release()` on the lock. If a thread different than the owner invokes `release()` a RuntimeError is thrown as shown in the example below:
+
+If you uncomment **line 20** in the above code widget the child thread would be able to execute. We can have arbitrary nesting of acquiring and releasing of the reentrant lock. For instance, the following would work:
+
+**Releasing unowned reentrant lock**
+
+```text
+rlock = RLock()
+ 
+rlock.acquire()
+rlock.acquire()
+rlock.acquire()
+rlock.release()
+ 
+rlock.acquire()
+rlock.release()
+rlock.release()
+rlock.release()
+```
+
+```python
+from threading import RLock
+from threading import Thread
+ 
+ 
+def perform_unlock():
+    rlock.release()
+    print("child task executing")
+    rlock.release()
+ 
+ 
+rlock = RLock()
+ 
+# reentrant lock acquired by main thread
+rlock.acquire()
+ 
+# let's attempt to unlock using a child thread
+thread = Thread(target=perform_unlock)
+thread.start()
+thread.join()
+ 
+```
+
+The nested acquire/release calls are tracked internally by recursion level which is incremented on every `acquire()` and decremented on every `release()` by the same thread. When the recursion level is zero, the reentrant lock is in unlocked state.
+
+Recognize this isn't a problem with non-reentrant locks.
 
 **Ownership**
 
