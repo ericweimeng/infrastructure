@@ -639,3 +639,926 @@ notify
 release lock
 ```
 
+Let's rewrite our printer thread first using the correct condition variable pattern. The first task the printer does is to wait for a prime number to become available. We can achieve that using the following snippet:
+
+**Printer thread waiting**
+
+```text
+        cond_var.acquire()
+        while not found_prime and not exit_prog:
+            cond_var.wait()
+        cond_var.release()
+```
+
+Once the printer thread has printed the found prime number, it needs to let the finder thread know to continue finding the next prime number. To achieve that we'll notify the condition variable after printing the prime number. In the finder thread code, we'll make the finder thread wait on the condition variable. The complete code for the printer thread appears below:
+
+**Printer threaddef printer\_thread\(\):    global prime\_holder    global found\_prime     while not exit\_prog:         \# wait for a prime number to become        \# available for printing        cond\_var.acquire\(\)        while not found\_prime and not exit\_prog:            cond\_var.wait\(\)        cond\_var.release\(\)         if not exit\_prog:            \# print the prime number            print\(prime\_holder\)             \# reset. We can skip this statement if we like            prime\_holder = None             \# make sure to wake up the finder thread            cond\_var.acquire\(\)            found\_prime = False            cond\_var.notify\(\)            cond\_var.release\(\)**  
+
+
+**Finder Thread**
+
+Now we'll turn our attention to the finder thread. It first attempts to find a prime number. Once found, it needs to communicate to the printer thread that a prime number is ready for printing. It does that by signaling the condition variable as follows:
+
+**Finder thread signaling printer thread**
+
+```text
+        cond_var.acquire()
+        found_prime = True
+        cond_var.notify()
+        cond_var.release()
+```
+
+The next step for the finder thread is to wait for the printer thread to complete its printing. The finder thread simply waits on the same condition variable for the printer thread to signal. The complete code for the finder thread appears below:
+
+**Finder thread**
+
+```text
+def finder_thread():
+    global prime_holder
+    global found_prime
+ 
+    i = 1
+ 
+    while not exit_prog:
+ 
+        while not is_prime(i):
+            i += 1
+ 
+        primeHolder = i
+ 
+        cond_var.acquire()
+        found_prime = True
+        cond_var.notify()
+        cond_var.release()
+ 
+        cond_var.acquire()
+        while found_prime and not exit_prog:
+            cond_var.wait()
+        cond_var.release()
+ 
+        i += 1
+ 
+```
+
+**Main Thread**
+
+Let's not forget the main thread which spawns both the printer and the finder threads. Note that the variable `exit_prog` is solely to control how long our program runs but doesn't affect the core working of the two spawned threads. The main thread needs to signal the condition variable too because it is possible that one of the threads ends up waiting on the condition variable while the other thread exits its while loop, causing the program to hang. The code for the main thread appears below:
+
+**Finder thread**
+
+```text
+cond_var = Condition()
+found_prime = False
+prime_holder = None
+exit_prog = False
+ 
+printer_thread = Thread(target=printer_thread_func)
+printer_thread.start()
+ 
+finder_thread = Thread(target=finder_thread_func)
+finder_thread.start()
+ 
+# Let the threads run for 3 seconds
+time.sleep(3)
+ 
+# Let the threads exit
+exit_prog = True
+ 
+cond_var.acquire()
+cond_var.notifyAll()
+cond_var.release()
+ 
+printer_thread.join()
+finder_thread.join()
+ 
+```
+
+The complete code for the program appears below:
+
+```python
+from threading import Thread
+from threading import Condition
+import time
+
+
+def printer_thread_func():
+    global prime_holder
+    global found_prime
+
+    while not exit_prog:
+
+        cond_var.acquire()
+        while not found_prime and not exit_prog:
+            cond_var.wait()
+        cond_var.release()
+
+        if not exit_prog:
+            print(prime_holder)
+
+            prime_holder = None
+
+            cond_var.acquire()
+            found_prime = False
+            cond_var.notify()
+            cond_var.release()
+
+
+def is_prime(num):
+    if num == 2 or num == 3:
+        return True
+
+    div = 2
+
+    while div <= num / 2:
+        if num % div == 0:
+            return False
+        div += 1
+
+    return True
+
+
+def finder_thread_func():
+    global prime_holder
+    global found_prime
+
+    i = 1
+
+    while not exit_prog:
+
+        while not is_prime(i):
+            i += 1
+            # Add a timer to slow down the thread
+            # so that we can see the output
+            time.sleep(.01)
+
+        prime_holder = i
+
+        cond_var.acquire()
+        found_prime = True
+        cond_var.notify()
+        cond_var.release()
+
+        cond_var.acquire()
+        while found_prime and not exit_prog:
+            cond_var.wait()
+        cond_var.release()
+
+        i += 1
+
+
+cond_var = Condition()
+found_prime = False
+prime_holder = None
+exit_prog = False
+
+printerThread = Thread(target=printer_thread_func)
+printerThread.start()
+
+finderThread = Thread(target=finder_thread_func)
+finderThread.start()
+
+# Let the threads run for 3 seconds
+time.sleep(3)
+
+# Let the threads exit
+exit_prog = True
+
+cond_var.acquire()
+cond_var.notifyAll()
+cond_var.release()
+
+printerThread.join()
+finderThread.join()
+
+```
+
+In the previous sections, we worked with `wait()` and `notify()` methods. These methods have closely related cousins which take in parameters. We discuss them as follows:
+
+**wait\(n\)**
+
+The `wait(n)` method takes in a floating point parameter n. This is the number of seconds a calling thread would wait to be notified by another thread. The wait method times out after n seconds and the thread is woken up even if no notification is received. Consider the below snippet:
+
+**Using wait\(n\)**
+
+```text
+from threading import Condition
+from threading import Thread
+import time
+ 
+flag = False
+ 
+cond_var = Condition()
+ 
+ 
+def child_task():
+    cond_var.acquire()
+ 
+    if (flag == False):
+        cond_var.wait(1)
+ 
+    if (flag == False):
+        print("child thread times out waiting for a notification")
+ 
+    # don't forget to release the lock    
+    cond_var.release()
+ 
+ 
+thread = Thread(target=child_task)
+thread.start()
+ 
+time.sleep(3)
+thread.join()
+ 
+```
+
+Note that we have digressed from the idiomatic usage of the wait method by not testing for the condition in a while loop. Since we don't want the child thread to be stuck in a loop waiting for a condition to become true we are using an if statement. The child thread times out after one second.
+
+```python
+from threading import Condition
+from threading import Thread
+import time
+
+flag = False
+
+cond_var = Condition()
+
+
+def child_task():
+    cond_var.acquire()
+
+    if (flag == False):
+        cond_var.wait(1)
+
+    if (flag == False):
+        print("child thread times out waiting for a notification")
+
+    # don't forget to release the lock    
+    cond_var.release()
+
+
+thread = Thread(target=child_task)
+thread.start()
+
+time.sleep(3)
+thread.join()
+```
+
+**notify\_all \( \)**
+
+`notify_all()` method can be used when there is more than one thread waiting on a condition variable. It can also be used if there's a single thread waiting. The sequence of events on a `notify_all()` when multiple threads are waiting is described below:
+
+* A thread comes along acquires the lock associated with the condition variable, and calls `wait()`
+* The thread invoking `wait()` gives up the lock and goes to sleep or is taken off the CPU timeslice
+* The given up lock can be reacquired by a second thread that then too calls `wait()`, gives up the lock, and goes to sleep.
+* Notice that the lock is available for any other thread to acquire and either invoke a wait or a notify on the associated condition variable.
+* Another thread comes along acquires the lock and invokes `notify_all()` and subsequently releases the lock.
+* Note it is imperative to release the lock, otherwise the waiting threads can't reacquire the lock and return from the `wait()` call.
+* The waiting threads are all woken up but only one of them gets to acquire the lock. This thread returns from the `wait()` method and proceeds forward. The thread selected to acquire the lock is random and not in the order in which threads invoked `wait()`.
+* Once the thread that is the first to wake up and make progress releases the lock, other threads acquire the lock one by one and proceed ahead.
+
+Study the code snippet below, where we initially have three threads wait on a condition variable before `notify_all()` is used to wake them all.
+
+## Semaphores
+
+This lesson introduces semaphores and their uses in Python.
+
+#### Semaphores
+
+Semaphore is one of the oldest synchronization primitives, invented by [Edsger Dijkstra](https://en.wikipedia.org/wiki/Edsger_W._Dijkstra). A semaphore is nothing more than an atomic counter that gets decremented by one whenever `acquire()` is invoked and incremented by one whenever `release()` is called. The semaphore can be initialized with an initial count value. If none is specified, the semaphore is initialized with a value of one.
+
+**Creating semaphore**
+
+```text
+# semaphore initialized with a default count of 1
+semaphore = Semaphore()
+ 
+# semaphore initialized with count set to 5
+sem_with_count = Semaphore(5)
+```
+
+**acquire \( \)**
+
+If a thread invokes `acquire()` on a semaphore, the semaphore counter is decremented by one. If the count is greater than 0, then the thread immediately returns from the `acquire()` call. If the semaphore counter is zero when a thread invokes `acquire()`, the thread gets blocked till another thread releases the semaphore.
+
+**release \( \)**
+
+When a thread invokes the `release()` method, the internal semaphore counter is incremented by one. If the counter value is zero and another thread is already blocked on an `acquire()` then a release would unblock the waiting thread. If multiple threads are blocked on the semaphore, then one thread is arbitrarily chosen.
+
+**Using Semaphores**
+
+Semaphores can be used in versatile ways. The primary use of semaphores is signaling among threads which are working to achieve a common goal. Consider the below snippet which uses a condition variable between threads.
+
+**Missed Signal**
+
+```text
+from threading import Thread
+from threading import Condition
+import time
+ 
+ 
+def task1():
+    cond_var.acquire()
+    cond_var.wait()
+    cond_var.release()
+ 
+ 
+def task2():
+    cond_var.acquire()
+    cond_var.notify()
+    cond_var.release()
+ 
+ 
+cond_var = Condition()
+ 
+# start thread 2 first which invokes notify
+thread2 = Thread(target=task2)
+thread2.start()
+ 
+# delay starting thread 1 by three seconds
+time.sleep(3)
+ 
+# start thread 1
+thread1 = Thread(target=task1)
+thread1.start()
+ 
+thread1.join()
+thread2.join()
+ 
+```
+
+The above program will never exit since the notifying thread notifies before the first thread has a chance to wait on the condition variable. This is a manifestation of a **missed signal**.
+
+You may realize from your reading in the previous sections that the way we are using the condition variable's `wait()` method is incorrect. The idiomatic usage of `wait()` is in a while loop with an associated boolean condition. For now, observe the possibility of losing signals between threads.
+
+The faulty program appears in the code widget below:
+
+```python
+from threading import Thread
+from threading import Condition
+import time
+
+
+def task1():
+    cond_var.acquire()
+    cond_var.wait()
+    cond_var.release()
+
+
+def task2():
+    cond_var.acquire()
+    cond_var.notify()
+    cond_var.release()
+
+
+cond_var = Condition()
+
+# start thread 2 first which invokes notify
+thread2 = Thread(target=task2)
+thread2.start()
+
+# delay starting thread 1 by three seconds
+time.sleep(3)
+
+# start thread 1
+thread1 = Thread(target=task1)
+thread1.start()
+
+thread1.join()
+thread2.join()
+```
+
+One way to remedy the above situation is to use semaphores. The internal counter of the semaphore remembers how many times the signal was received. Replacing the above code with semaphore looks as follows:
+
+**Fixing missed signal**
+
+```python
+from threading import Thread
+from threading import Semaphore
+import time
+ 
+ 
+def task1():
+    sem.acquire()
+ 
+ 
+def task2():
+    sem.release()
+ 
+# initialize with zero
+sem = Semaphore(0)
+ 
+# start thread 2 first which invokes release()
+thread2 = Thread(target=task2)
+thread2.start()
+ 
+# delay starting thread 1 by three seconds
+time.sleep(3)
+ 
+# start thread 1
+thread1 = Thread(target=task1)
+thread1.start()
+ 
+thread1.join()
+thread2.join()
+ 
+```
+
+Note that we are initializing the semaphore with a count of zero. If we used the default initialization of 1, then the first call to `acquire()` would not block the thread.
+
+**Rewriting the prime printer program**
+
+As an additional example, we rewrite our prime printer program from previous sections using semaphores. Note how the code becomes less verbose and possibly easier to follow:
+
+**Printer Program**
+
+```python
+from threading import Thread
+from threading import Semaphore
+import time
+ 
+ 
+def printer_thread():
+    global primeHolder
+ 
+    while not exitProg:
+        # wait for a prime number to become available
+        sem_find.acquire()
+ 
+        # print the prime number
+        print(primeHolder)
+        primeHolder = None
+ 
+        # let the finder thread find the next prime
+        sem_print.release()
+ 
+ 
+def is_prime(num):
+    if num == 2 or num == 3:
+        return True
+ 
+    div = 2
+ 
+    while div <= num / 2:
+        if num % div == 0:
+            return False
+        div += 1
+    return True
+ 
+ 
+def finder_thread():
+    global primeHolder
+ 
+    i = 1
+ 
+    while not exitProg:
+ 
+        while not is_prime(i):
+            i += 1
+            # Add a timer to slow down the thread
+            # so that we can see the output
+            time.sleep(.01)
+ 
+        primeHolder = i
+ 
+        # let the printer thread know we have
+        # a prime available for printing
+        sem_find.release()
+ 
+        # wait for printer thread to complete
+        # printing the prime number
+        sem_print.acquire()
+ 
+        i += 1
+ 
+ 
+sem_find = Semaphore(0)
+sem_print = Semaphore(0)
+primeHolder = None
+exitProg = False
+ 
+printerThread = Thread(target=printer_thread)
+printerThread.start()
+ 
+finderThread = Thread(target=finder_thread)
+finderThread.start()
+ 
+# Let the threads run for 3 seconds
+time.sleep(3)
+ 
+exitProg = True
+ 
+printerThread.join()
+finderThread.join()
+```
+
+## Events
+
+This lesson talks about Events, which is a lesser known utility class within the threading module.
+
+#### Events
+
+An event object is one of the simplest primitives available for synchronization. Internally, it has a boolean flag that can be set or unset using the methods `set()` and `clear()`. Additionally, a thread can check if the flag is set to true by invoking the `is_set()` method.
+
+The event object exposes a `wait()` method that threads can invoke to wait for the internal boolean flag to become true. If the flag is already true, the thread returns immediately. If there are multiple threads waiting on the event object and an active thread sets the flag then all the waiting threads are unblocked.
+
+`Event` is a convenience class and a wrapper over a condition variable with a boolean predicate. This is the most common setup for many cooperating threads where two or more threads coordinate among themselves on a boolean predicate.
+
+**Differences with Semaphores**
+
+Event objects may seem similar to semaphore or a bounded semaphore but there are slight differences:
+
+* An unbounded semaphore can have its internal counter incremented as many times as `acquire()` is invoked on it, whereas an event object maintains an internal boolean flag that can only flip between two state: set or unset.
+* Can a bounded semaphore intialized to 1 be equivalent to an event object? The answer is no because the bounded semaphore will raise a `ValueError` if the bounded semaphore is acquired more number of times than the initial passed in capacity. Also acquiring a semaphore decrements the internal counter of the semaphore whereas waiting on an event object doesn't change the state of the internal boolean flag.
+* A thread never gets blocked on `wait()` of an event object if the internal flag is set to true no matter how many times the thread invokes the `wait()` method.
+
+Below is a naive example of using event to coordinate interaction between two threads:
+
+**Event example**
+
+```text
+from threading import Thread
+from threading import Event
+import time
+ 
+ 
+def task1():
+    event.wait()
+    event.wait()
+    event.wait()
+    print("thread invoked wait thrice")
+ 
+ 
+def task2():
+    time.sleep(1)
+    event.set()
+ 
+ 
+event = Event()
+ 
+thread1 = Thread(target=task1)
+thread1.start()
+ 
+thread2 = Thread(target=task2)
+thread2.start()
+ 
+thread1.join()
+thread2.join()
+```
+
+We can implement our prime printing program using events. The code appears below:
+
+**Prime printing program using events**
+
+```python
+from threading import Thread
+from threading import Event
+import time
+ 
+ 
+def printer_thread():
+    global primeHolder
+ 
+    while not exitProg:
+        # wait for a prime number to become available
+        prime_available.wait()
+ 
+        # print the prime number
+        print(primeHolder)
+        primeHolder = None
+ 
+        # reset the event to false
+        prime_available.clear()
+ 
+        # let the finder thread know that printing is done
+        prime_printed.set()
+ 
+ 
+def is_prime(num):
+    if num == 2 or num == 3:
+        return True
+ 
+    div = 2
+ 
+    while div <= num / 2:
+        if num % div == 0:
+            return False
+        div += 1
+    return True
+ 
+ 
+def finder_thread():
+    global primeHolder
+ 
+    i = 1
+ 
+    while not exitProg:
+ 
+        while not is_prime(i):
+            i += 1
+            # Add a timer to slow down the thread
+            # so that we can see the output
+            time.sleep(.01)
+ 
+        primeHolder = i
+ 
+        # let the printer thread know we have
+        # a prime available for printing
+        prime_available.set()
+ 
+        # wait for printer thread to print the prime
+        prime_printed.wait()
+ 
+        # reset the flag
+        prime_printed.clear()
+ 
+        i += 1
+ 
+ 
+ 
+prime_available = Event()
+prime_printed = Event()
+primeHolder = None
+exitProg = False
+ 
+printerThread = Thread(target=printer_thread)
+printerThread.start()
+ 
+finderThread = Thread(target=finder_thread)
+finderThread.start()
+ 
+# Let the threads run for 3 seconds
+time.sleep(3)
+ 
+exitProg = True
+prime_available.set()
+prime_printed.set()
+ 
+printerThread.join()
+finderThread.join()
+```
+
+## Timer
+
+This lesson discusses the Timer class with examples.
+
+#### Timer
+
+The Timer object allows execution of a callable object after a certain amount of time has elapsed. Consider the snippet below where a `Timer` object executes the method `say_hi()` in a different thread than the main thread. The thread names can be observed from the output.
+
+**Creating a timer**
+
+```python
+from threading import Timer
+from threading import current_thread
+import time
+ 
+ 
+def say_hi():
+    print("{0} says Hi!".format(current_thread().getName()))
+ 
+ 
+timer = Timer(1, say_hi)
+timer.start()
+ 
+time.sleep(2)
+ 
+print("{0} exiting".format(current_thread().getName()))
+```
+
+The timer constructor takes in a floating point number representing the seconds that need to elapse before the task is executed. Though when the task is executed may not be exactly after the passed in number of seconds. It may be slightly more than the interval passed in.
+
+Time is a subclass of the `Thread` class and similarly accepts arguments as a list or a keyword dictionary.
+
+A timer object can also be cancelled using the `cancel()` method before the task has been executed.
+
+## Barrier
+
+This lesson discusses the all-important barrier synchronization construct.
+
+#### Barrier
+
+A barrier is a synchronization construct to wait for a certain number of threads to reach a common synchronization point in code. The involved threads each invoke the barrier object's `wait()` method and get blocked till all of threads have called `wait()`. When the last thread invokes `wait()` all of the waiting threads are released simultaneously. The below snippet shows example usage of barrier:
+
+**Using a barrier**
+
+```python
+from threading import Barrier
+from threading import Thread
+import random
+import time
+ 
+ 
+def thread_task():
+    time.sleep(random.randint(0, 7))
+    print("\nCurrently {0} threads blocked on barrier".format(barrier.n_waiting))
+    barrier.wait()
+ 
+ 
+num_threads = 5
+barrier = Barrier(num_threads)
+threads = [0] * num_threads
+ 
+for i in range(num_threads):
+    threads[i - 1] = Thread(target=thread_task)
+ 
+for i in range(num_threads):
+    threads[i].start()
+```
+
+The barrier constructor also accepts a callable argument as an action to be performed when threads are released. Only one of the threads released will invoke the action. An example is given below:
+
+```python
+from threading import Barrier
+from threading import Thread
+from threading import current_thread
+import random
+import time
+ 
+ 
+def thread_task():
+    time.sleep(random.randint(0, 5))
+    print("\nCurrently {0} threads blocked on barrier".format(barrier.n_waiting))
+    barrier.wait()
+ 
+ 
+def when_all_threads_released():
+    print("All threads released, reported by {0}".format(current_thread().getName()))
+ 
+ 
+num_threads = 5
+barrier = Barrier(num_threads, action=when_all_threads_released)
+threads = [0] * num_threads
+ 
+for i in range(num_threads):
+    threads[i - 1] = Thread(target=thread_task)
+ 
+for i in range(num_threads):
+    threads[i].start()
+```
+
+If you execute the above snippet multiple times, you'll see that the action passed into barrier constructor is executed by a randomly chosen thread each time.
+
+**Broken Barriers**
+
+The barrier object exposes an `abort()` method which can be invoked to avoid deadlocks if needed. Threads already waiting on a barrier experience a `BrokenBarrierError` if `abort()` is invoked. The example below demonstrates this scenario.
+
+**Breaking barriers**
+
+```text
+from threading import Barrier
+from threading import Thread
+import time
+ 
+ 
+def thread_task():
+    print("\nCurrently {0} threads blocked on barrier".format(barrier.n_waiting))
+    barrier.wait()
+    print("Barrier broken")
+ 
+ 
+num_threads = 5
+barrier = Barrier(num_threads + 1)
+threads = [0] * num_threads
+ 
+for i in range(num_threads):
+    threads[i - 1] = Thread(target=thread_task)
+ 
+for i in range(num_threads):
+    threads[i].start()
+ 
+time.sleep(3)
+ 
+print("Main thread about to invoke abort on barrier")
+barrier.abort()
+```
+
+## With
+
+This lesson introduces the use of with and context management with synchronization primitives.
+
+#### With
+
+Programs often use resources other than CPU time, including access to local disks, network sockets, and databases etc. The usage pattern is usually a `try-except-finally` block. Any cleanup actions are performed in the `finally` block. An alternative to the usual boilterplate code is to use the `with` statement. The `with` statement wraps the execution of a block of statements in a context defined by a **context manager** object.
+
+**Context Management Protocol**
+
+A context manager object abides by the context management protocol, which states that an object defines the following two methods. Python calls these two methods at appropriate times in the resource management cycle:
+
+* `__enter__()`
+* `__exit__()`
+
+The with statement is used as:
+
+```text
+    with context-expression [as target]:
+        statement#1
+        statement#2
+            .
+            .
+            .
+        statement#n
+```
+
+* `__enter__()` should return an object that is assigned to the variable after **as** in the above template. By default the returned object is None, and is optional. A common pattern is to return self and keep the functionality required within the same class.
+* `__exit__()` is called on the original Context Manager object, not the object returned by `__enter__()`. If, however, we return self in the `__enter__()` method, then it is obviously the same object.
+* If an error is raised in `__init__()` or `__enter__()` then the code block is never executed and `__exit__()` is not called.
+* Once the code block is entered, `__exit__` is always called, even if an exception is raised in the code block.
+* In case an exception is raised when executing the block of code wrapped by the `with` statement, three values consisting of the exception types, its value and traceback are passed as arguments to the `__exit__()` method. These parameters are None if no exceptions occur. Lastly, if an exception was raised and the `__exit__()` method returns True, the exception is suppressed. On the contrary, if `__exit__()` returns false then the exception is re-raised.
+
+Context managers can be used in scenarios to save and restore global state, lock and unlock resources, close opened files, etc.
+
+**Example**
+
+The most common use of the `with` statement happens when we manipulate files. Without the `with` statement, file manipulation would look as follows:
+
+```text
+    file = None
+    try:
+        file = open("test.txt")
+    except Exception as e:
+        print(e)
+ 
+    finally:
+        if file is not None:
+            file.close()
+```
+
+Using the `with` statement the above code is simplified as:
+
+```text
+with open("test.txt") as file:    
+    data = file.read() 
+```
+
+The `with` statement helps simplify some common resource management patterns by abstracting their functionality and allowing them to be factored out and reused. The code becomes expressive and easier to read. In fact, we can write a class that implements the enter and exit methods and makes it compatible with the `with` statement. An example is shown below:
+
+```text
+class ExampleClass(object):
+ 
+    def __init__(self, val):
+        print("init")
+        self.val = val
+ 
+    def display(self):
+        print(self.val)
+ 
+    def __enter__(self):
+        print("enter invoked")
+        return self
+ 
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print("exit invoked")
+ 
+ 
+if __name__ == "__main__":
+    with ExampleClass("hello world") as example:
+        example.display()
+```
+
+**Using With Statement in Multithreading**
+
+Some classes in the `threading` module such as `Lock`, support the context management protocol and can be used with the `with` statement. In the example below, we reproduce an example from an earlier section and use the `with` statement with the `Lock` object `my_lock`. Note, we don't need to explicitly `acquire()` and `release()` the lock object. The context manager automatically takes care of managing the lock for us.
+
+```text
+sharedState = [1, 2, 3]
+my_lock = Lock()
+ 
+ 
+def thread1_operations():
+ 
+    with my_lock:
+        print("{0} has acquired the lock".format(current_thread().getName()))
+ 
+        time.sleep(3)  #
+        sharedState[0] = 777
+ 
+        print("{0} about to release the lock".format(current_thread().getName()))
+ 
+    print("{0} released the lock".format(current_thread().getName()))
+ 
+ 
+def thread2_operations():
+    print("{0} is attempting to acquire the lock".format(current_thread().getName()))
+ 
+    with my_lock:
+        print("{0} has acquired the lock".format(current_thread().getName()))
+ 
+        print(sharedState[0])
+        print("{0} about to release the lock".format(current_thread().getName()))
+ 
+    print("{0} released the lock".format(current_thread().getName()))
+ 
+ 
+if __name__ == "__main__":
+    # create and run the two threads
+    thread1 = Thread(target=thread1_operations, name="thread1")
+    thread1.start()
+ 
+    thread2 = Thread(target=thread2_operations, name="thread2")
+    thread2.start()
+ 
+    # wait for the two threads to complete
+    thread1.join()
+    thread2.join()
+```
+
