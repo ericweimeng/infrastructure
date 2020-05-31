@@ -78,6 +78,8 @@ Why?
 
 {% hint style="info" %}
 The way to see if the content crawled from a url is different from last time it's crawled is to **hash the web content** to get a hash value, with the hash value we can compare it with last value
+
+Let's say initial time interval for crawling all webpages is one week, then we would adjust it's interval based on how often a site is being updated, and only crawl those pages with available time less or equal than now, but not future available time.
 {% endhint %}
 
 * Get 1000 tasks per request from task table
@@ -85,11 +87,27 @@ The way to see if the content crawled from a url is different from last time it'
 
 ![](../../.gitbook/assets/screen-shot-2019-12-17-at-10.27.21-pm.png)
 
+#### Problems for this basic architecture
+
+* Table could be super big
+
 #### Task table sharding
 
 ![](../../.gitbook/assets/screen-shot-2019-12-18-at-9.38.55-pm.png)
 
 #### How to handle update for failure
+
+Exponential Back-off
+
+If we get 404 page from a website, then:
+
+success: crawl after one week
+
+No.1 failure: crawl after 2 weeks \(everytime we double the time\)
+
+No.2 failure: crawl after 4 weeks
+
+No.3 failure: crawl after 8 weeks
 
 * Content Update
 * Crawling failure
@@ -103,7 +121,7 @@ Content Update
   * No update for 2 week -&gt; crawl after 4 weeks
   * No update for 4 week -&gt; crawl after 8 weeks
   * ...........
-* The same machoism works the same but in reverse when it comes to websites which are frequently updating 
+* The same mechanism works the same but in reverse when it comes to websites which are frequently updating
 
 Crawling failure
 
