@@ -26,6 +26,7 @@
 
 ## Design
 
+* [Design Related Concepts](design/design-related-concepts.md)
 * [Object-Oriented Design](design/object-oriented-design.md)
 * [Database Design](design/database-design.md)
 * [System Design](design/system-design/README.md)
