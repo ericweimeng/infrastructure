@@ -1,4 +1,4 @@
-# CSRF
+# Cross-site Request Forgery \(CSRF\)
 
 [Cross-Site Request Forgery \(CSRF\)](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_%28CSRF%29) is a type of attack that occurs when a malicious web site, email, blog, instant message, or program causes a user's web browser to perform an unwanted action on a trusted site when the user is authenticated. A CSRF attack works because browser requests automatically include any credentials associated with the site, such as the user's session cookie, IP address, etc. Therefore, if the user is authenticated to the site, the site cannot distinguish between the forged or legitimate request sent by the victim. We would need a token/identifier that is not accessible to attacker and would not be sent along \(like cookies\) with forged requests that attacker initiates. For more information on CSRF, see OWASP [Cross-Site Request Forgery \(CSRF\) page](https://www.owasp.org/index.php/Cross-Site_Request_Forgery_%28CSRF%29).
 

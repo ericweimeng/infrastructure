@@ -12,7 +12,8 @@
 
 ## Web Securities <a id="security"></a>
 
-* [CSRF](security/csrf.md)
+* [Cross-site Request Forgery \(CSRF\)](security/csrf.md)
+* [Cross-Site Scripting \(XSS\)](security/cross-site-scripting-xss.md)
 
 ## Network
 
