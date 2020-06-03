@@ -32,7 +32,7 @@ Usually NoSQL database use key-value to query whereas SQL based database usually
 
 * Simple idea is to use the id to mod number of machines
   * Problem
-    * What if add new machines, then many data need to be moved
+    * What if add/delete machines, then many data need to be moved
       * Slow, write
       * server gets heavy load
       * data inconsistency
@@ -80,6 +80,12 @@ For solving single point failure.
 * Data structure used to achieve this
   * red-black tree
 * The purpose for this algorithm is to make sure every physical machine can take part in sharing parts of its entire data to the new machine, therefore the burden on each machine while doing the data migration could be mitigated
+
+**Reads for scaling**
+
+{% embed url="https://medium.com/pinterest-engineering/sharding-pinterest-how-we-scaled-our-mysql-fleet-3f341e96ca6f" %}
+
+{% embed url="https://dzone.com/articles/challenges-of-sharding-mysql" %}
 
 ## Backup vs Replica
 

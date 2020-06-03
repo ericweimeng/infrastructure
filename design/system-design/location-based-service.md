@@ -47,6 +47,8 @@ or /Facebook nearby/Yelp/...\(any location based apps\)
 
 #### Stage 1
 
+Rider request can be pushed to driver or when driver reports its location, the response will bring a ride request if there's any.
+
 ![](../../.gitbook/assets/screen-shot-2019-12-23-at-9.15.15-pm.png)
 
 #### Stage 2
