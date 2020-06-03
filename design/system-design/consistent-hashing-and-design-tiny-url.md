@@ -142,9 +142,9 @@ Query Data
 
 #### Things need to check
 
-* Does long and short URLs have to be on a one to one relation
+* Does long and short URLs have to be on a **one to one relation**
   * usually long -&gt; short can be one to many, but short -&gt; long has to be one to one
-* Does it need to release that short URL if the URL has been used for a long time
+* Does it need to **release that short URL** if the URL has been used for a long time
   * better not
 
 #### Requirements
