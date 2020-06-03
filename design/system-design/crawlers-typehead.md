@@ -224,7 +224,7 @@ Above table is the table we collect hit-count every day, and this table is going
 
 ![](../../.gitbook/assets/screen-shot-2019-12-19-at-6.00.42-pm.png)
 
-When traffic going to query-service machine, the trie in it will be locked for query. The DataCollectionService would not update trie lively.
+When traffic going to query-service machine, the trie in it will be locked for query. The DataCollectionService would not update trie lively. Usually the DataCollectionService would build the trie in a offline machine, and put in traffic when trie has been built.
 
 ### How to qualify this system
 
@@ -233,6 +233,8 @@ When traffic going to query-service machine, the trie in it will be locked for q
 * Bottom line: result quality
 
 ### When trie gets to large for one machine
+
+![](../../.gitbook/assets/screen-shot-2020-06-02-at-17.18.29.png)
 
 ![](../../.gitbook/assets/screen-shot-2019-12-20-at-9.07.08-pm.png)
 
@@ -246,6 +248,8 @@ When traffic going to query-service machine, the trie in it will be locked for q
 ![](../../.gitbook/assets/screen-shot-2019-12-20-at-9.12.13-pm.png)
 
 ### How to reduce log file
+
+![](../../.gitbook/assets/screen-shot-2020-06-02-at-17.26.59.png)
 
 * For prefixes that have relatively higher searching volumes, we pick a random number each time and only when it is a certain number then we log it.
   * like amazon, say if we have 20b each day, then every time we pick a random number from 1 - 1000 and only log it when we get number 1
