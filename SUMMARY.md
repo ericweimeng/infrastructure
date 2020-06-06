@@ -56,6 +56,9 @@
   * [Designing Uber backend](design/system-design/designing-uber-backend.md)
   * [Design Ticketmaster \(\*New\*\)](design/system-design/design-ticketmaster-new.md)
   * [Additional Resources](design/system-design/additional-resources.md)
+* [System Design Notes and Summary](design/system-design-notes-and-summary/README.md)
+  * [Design the Twitter](design/system-design-notes-and-summary/design-the-twitter.md)
+  * [Dropbox](design/system-design-notes-and-summary/dropbox.md)
 
 ## Language
 
