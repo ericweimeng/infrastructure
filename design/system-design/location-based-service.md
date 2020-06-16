@@ -9,13 +9,13 @@ or /Facebook nearby/Yelp/...\(any location based apps\)
 #### Stage 1
 
 * Drivers report locations
-* Rider request Uber, match a driver with rider
+* passenger request Uber, match a driver with passenger
 
 #### Stage 2
 
 * Driver deny/accept a request
 * Driver cancels a matched request
-* Rider cancels a request
+* passenger cancels a request
 * Driver picks up a rider and starts a trip
 * Driver drops off a rider and ends a trip
 
@@ -26,12 +26,12 @@ or /Facebook nearby/Yelp/...\(any location based apps\)
 
 #### Level of performance the system should be performing
 
-* Assuming 200K rivers are online at the same time
+* Assuming 200K riders are online at the same time
   * Driver reports location every 4 seconds is a reasonable number
     * QPS = 200K / 4 = 50K
     * Peak QPS = 50K \* 3 = 150K
       * 150K writes is not a small number at all, it requires a write-bound, fast storage
-  * Rider QPS can be ignored
+  * passenger QPS can be ignored
     * Confidential considerations
     * Must be far less than drivers'
 * Volumes estimation
@@ -40,14 +40,16 @@ or /Facebook nearby/Yelp/...\(any location based apps\)
 
 ### Service
 
+Uber mainly are doing two things:
+
 * Geoservice
   * Record vehicle's location
 * DispatchService
-  * Match request between driver and rider
+  * Match request between driver and passenger
 
 #### Stage 1
 
-Rider request can be pushed to driver or when driver reports its location, the response will bring a ride request if there's any.
+passenger request can be pushed to driver or when driver reports its location, the response will bring a ride request if there's any.
 
 ![](../../.gitbook/assets/screen-shot-2019-12-23-at-9.15.15-pm.png)
 
@@ -71,6 +73,12 @@ The problem with above structure is it does not include how the driver receives 
 ![](../../.gitbook/assets/screen-shot-2019-12-23-at-9.47.20-pm.png)
 
 ### How LBS stores geography information
+
+How to find drivers within certain latitude and longitude?
+
+select \* from locations where lat &lt; xxx and lat &gt; yyy and log &lt; zzz and log &gt; kkk
+
+The problem with this is that it finds all drivers within a latitude range and then find all drivers within a longitude range, then union them.
 
 ![](../../.gitbook/assets/screen-shot-2019-12-23-at-10.07.52-pm.png)
 
