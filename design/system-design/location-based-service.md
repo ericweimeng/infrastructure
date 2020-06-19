@@ -82,3 +82,7 @@ The problem with this is that it finds all drivers within a latitude range and t
 
 ![](../../.gitbook/assets/screen-shot-2019-12-23-at-10.07.52-pm.png)
 
+GeoHash
+
+![](../../.gitbook/assets/screen-shot-2020-06-16-at-15.37.11.png)
+
