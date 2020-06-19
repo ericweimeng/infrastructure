@@ -38,6 +38,8 @@
   * [System Design Interviews: A step by step guide](design/system-design/system-design-interviews-a-step-by-step-guide.md)
   * [Consistent Hashing & Design Tiny URL](design/system-design/consistent-hashing-and-design-tiny-url.md)
   * [Designing a URL Shortening service like TinyURL](design/system-design/designing-a-url-shortening-service-like-tinyurl.md)
+  * [Rate Limiter](design/system-design/rate-limiter.md)
+  * [Chatting App](design/system-design/chatting-app.md)
   * [Crawlers, Typeahead](design/system-design/crawlers-typehead.md)
   * [Location-Based Service](design/system-design/location-based-service.md)
   * [Distributed Systems](design/system-design/distributed-systems.md)
