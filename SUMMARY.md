@@ -7,8 +7,6 @@
 * [Cloud](aws/cloud.md)
 * [AWS Security Essentials](aws/aws-security-essentials.md)
 * [SQS](aws/sqs.md)
-* [Bash](bash/README.md)
-  * [Grep](bash/grep.md)
 
 ## Web Securities <a id="security"></a>
 
@@ -78,4 +76,10 @@
 ## Debugging
 
 * [Debug](debugging/debug.md)
+
+## Unix/Linux
+
+* [Bash](unix-linux/bash/README.md)
+  * [Grep](unix-linux/bash/grep.md)
+* [Untitled](unix-linux/untitled.md)
 
