@@ -17,7 +17,9 @@
 
 * [IP Address](network/ip-address.md)
 * [Subnetting](network/subnetting.md)
+* [Network Routing](network/network-routing.md)
 * [Network Interfaces](network/network-interfaces.md)
+* [Network Trouble Shooting](network/network-trouble-shooting.md)
 
 ## Git
 
