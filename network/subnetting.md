@@ -76,3 +76,29 @@ Hardware address on NIC
 
 ![](../.gitbook/assets/screen-shot-2020-06-26-at-17.00.50.png)
 
+### Number of Hosts
+
+![](../.gitbook/assets/screen-shot-2020-06-29-at-18.11.53.png)
+
+### Range of Network Address
+
+![](../.gitbook/assets/screen-shot-2020-06-29-at-18.12.11.png)
+
+### Number of Subnets
+
+![](../.gitbook/assets/screen-shot-2020-06-29-at-18.12.26.png)
+
+## Classful Networking
+
+## CIDR
+
+Classless Inter-Domain Routing
+
+* Does not use classes at all for networking assignment or sizing
+* The entire unicast range can be segmented into any sized network
+* Subnet masks not limited to 255.255.255.0, 255.255.0.0 or 255.0.0.0
+
+### Calculating Network Range
+
+![](../.gitbook/assets/screen-shot-2020-06-29-at-18.49.13.png)
+
