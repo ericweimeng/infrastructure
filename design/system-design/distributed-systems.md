@@ -101,6 +101,10 @@ Usually, the offset will be stored on chuck server
 
 ![](../../.gitbook/assets/screen-shot-2020-04-04-at-3.24.07-pm.png)
 
+{% hint style="info" %}
+Client here could be a webserver.
+{% endhint %}
+
 ![](../../.gitbook/assets/screen-shot-2020-04-04-at-3.26.42-pm.png)
 
 #### How to modify the file
@@ -130,6 +134,8 @@ Usually, things like log, raw or intermediate data for map-reduce will be stored
 
 #### Scale on failure and recover
 
+Single master is enough, just restart
+
 How to identify if a chunk on the disk is broken
 
 * Checksum
@@ -142,6 +148,8 @@ How to identify if a chunk on the disk is broken
     * when trying to read a chunk
     * calculate current checksum
     * comparing if current checksum is equal to previous checksum
+
+![](../../.gitbook/assets/screen-shot-2020-11-29-at-22.01.32.png)
 
 How to avoid chunk data loss when a chuck server is down or failing
 
