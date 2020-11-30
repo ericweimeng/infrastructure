@@ -154,6 +154,8 @@ How to identify if a chunk on the disk is broken
 How to avoid chunk data loss when a chuck server is down or failing
 
 * Replica
+  * 3 copies of replica
+  * put 2 replica close to each other for fast check if one replica has issue, put another one to a far place
 
 What are the strategies to pick a chunk server
 
