@@ -186,15 +186,15 @@ Disadvantage of above structure:
 
 ![](../../.gitbook/assets/screen-shot-2020-04-04-at-4.39.41-pm.png)
 
-How to find that representative server
+How to find that leader server
 
-* the closet/fastest one
+* the closest/fastest one
 * idle server \(balance traffic\)
 * is not fixed
 
 How to solve chunk server failure
 
-* Server who fails to write will speak loudly to notify representative server
+* Server who fails to write will speak loudly to notify leader server
 * And once client gets notification on failure, it will retry the same request to master
 * master will replace the failed one with a replica chunk server, and points to this new server
 
