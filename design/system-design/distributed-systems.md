@@ -55,6 +55,7 @@
 #### Interviewer: how to save a large file in one machine
 
 * Is block size big enough?
+  * if block or chunk size is too small, then there will be more metadata need to be stored
 * 100T = 100 \* 1000G = 100 \* 1000 \* 1000M = 100 \* 1000 \* 1000 \* 1000K = 
   * 100 \* 1000 \* 1000 \* 1000 \* 1000 block
 
