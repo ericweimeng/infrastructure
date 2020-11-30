@@ -48,7 +48,8 @@
 
 #### How files being stored in disk
 
-* Meta data and file stored separately
+* Metadata and file stored separately
+  * Metadata is usually more accessed than the actual content
 * Usually stored as block, and the size of the block is usually 1024 bytes
 
 #### Interviewer: how to save a large file in one machine
