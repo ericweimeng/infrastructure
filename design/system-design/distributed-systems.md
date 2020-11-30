@@ -74,7 +74,15 @@ Usually a big file is merged from many files
 
 ![](../../.gitbook/assets/screen-shot-2020-04-03-at-10.25.36-pm.png)
 
+{% hint style="info" %}
+Why doesn't it have different chunk sizes for different sizes of files?
+
+chunk server needs same size to calculate offset values
+{% endhint %}
+
 ![](../../.gitbook/assets/screen-shot-2020-04-04-at-3.06.39-pm.png)
+
+![](../../.gitbook/assets/screen-shot-2020-11-29-at-21.37.40.png)
 
 {% hint style="info" %}
 Usually, the offset will be stored on chuck server
