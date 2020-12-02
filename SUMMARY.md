@@ -27,7 +27,10 @@
 
 ## Design
 
-* [Design Related Concepts](design/design-related-concepts.md)
+* [Design Related Concepts](design/design-related-concepts/README.md)
+  * [API Gateway](design/design-related-concepts/api-gateway.md)
+  * [Client Side & Server Side Rendering](design/design-related-concepts/client-side-and-server-side-rendering.md)
+  * [Push vs Pull Architectures](design/design-related-concepts/push-vs-pull-architectures.md)
 * [Object-Oriented Design](design/object-oriented-design.md)
 * [Database Design](design/database-design.md)
 * [System Design](design/system-design/README.md)
@@ -40,8 +43,6 @@
     * [Dropbox](design/system-design/distributed-file-system/dropbox.md)
     * [Google Drive](design/system-design/distributed-file-system/google-drive.md)
   * [Design Related Concepts](design/system-design/design-related-concepts/README.md)
-    * [Push vs Pull Architectures](design/system-design/design-related-concepts/push-vs-pull-architectures.md)
-    * [Client Side & Server Side Rendering](design/system-design/design-related-concepts/client-side-and-server-side-rendering.md)
     * [Scalability](design/system-design/design-related-concepts/scalability.md)
   * [4S Analysis & User Management System](design/system-design/4s-analysis-and-user-management-system.md)
   * [System Design Interviews: A step by step guide](design/system-design/system-design-interviews-a-step-by-step-guide.md)
