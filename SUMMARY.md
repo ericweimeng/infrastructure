@@ -43,6 +43,7 @@
     * [Dropbox](design/system-design/distributed-file-system/dropbox.md)
     * [Google Drive](design/system-design/distributed-file-system/google-drive.md)
   * [Design Related Concepts](design/system-design/design-related-concepts/README.md)
+    * [Proxy](design/system-design/design-related-concepts/proxy.md)
     * [Scalability](design/system-design/design-related-concepts/scalability.md)
   * [4S Analysis & User Management System](design/system-design/4s-analysis-and-user-management-system.md)
   * [System Design Interviews: A step by step guide](design/system-design/system-design-interviews-a-step-by-step-guide.md)

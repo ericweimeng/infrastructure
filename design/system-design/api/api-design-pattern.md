@@ -1,5 +1,7 @@
 # API Design Pattern
 
+Original Article: [https://www.jianshu.com/p/cf80d644727e](https://www.jianshu.com/p/cf80d644727e)
+
 **使用 HTTP Methods 构建 RESTful API**
 
 HTTP Methods 一共有九个，分别是 GET，HEAD，POST，PUT，DELETE，TRACE，OPTIONS，CONNECT，PATCH。在RESTful API 设计中，常用的有POST，GET，PUT，PATCH 和 DELETE，分别对应对资源的创建，获取，修改，部分修改和删除操作。下表简单列出了这些Methods的用途和返回值约定。
@@ -135,7 +137,7 @@ GET 操作的返回数据是显而易见，这里不做过多讨论。对于更�
 
 http status code 的常用应用场景如下：
 
-* 200 OK 用于返回 GET, PUT, PATCH 或 DELETE 的操作。有使用也用来返回没有创建数据的 POST 操作；
+* 200 OK 用于返回 GET, PUT, PATCH 或 DELETE 的操作。有时也用来返回没有创建数据的 POST 操作；
 * 201 Created 用来返回 POST 操作并且成功创建了数据的情况。新创建的数据资源的链接应该放在location中返回，具体参见这里 ；
 * 204 No Content 用来返回一次成功的请求，但是该请求返回的 body 为空的情况，如 DELETE 请求；
 * 304 Not Modified 表示缓存没有失效，和上次的请求相比，没有新的内容；
