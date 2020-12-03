@@ -12,6 +12,8 @@
 
 * [Cross-site Request Forgery \(CSRF\)](security/csrf.md)
 * [Cross-Site Scripting \(XSS\)](security/cross-site-scripting-xss.md)
+* [Authentication](security/authentication/README.md)
+  * [Authentication in SPA \(ReactJS and VueJS\) the right way](security/authentication/authentication-in-spa-reactjs-and-vuejs-the-right-way.md)
 
 ## Network
 
