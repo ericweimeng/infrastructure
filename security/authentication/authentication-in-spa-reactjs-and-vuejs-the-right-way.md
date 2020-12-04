@@ -1,6 +1,6 @@
 # Authentication in SPA \(ReactJS and VueJS\) the right way
 
-
+Original source: [https://jcbaey.com/authentication-in-spa-reactjs-and-vuejs-the-right-way?utm\_source=medium&utm\_campaign=spa-authentication](https://jcbaey.com/authentication-in-spa-reactjs-and-vuejs-the-right-way?utm_source=medium&utm_campaign=spa-authentication)
 
 Authentication in a single page application \(SPA\) involves several patterns with **pros and cons**. This article will list the main important concepts and best practices to know and have in mind when dealing with user authentication, especially in this common architecture:[![Basic web application architecture](https://jcbaey.com/static/f6e0264f0793863c51511fdeac6dab87/924ad/basic-web-architecture.png)](https://jcbaey.com/static/f6e0264f0793863c51511fdeac6dab87/924ad/basic-web-architecture.png)Basic web application architecture
 
