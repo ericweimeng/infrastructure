@@ -34,6 +34,7 @@
   * [API Gateway](design/design-related-concepts/api-gateway.md)
   * [Client Side & Server Side Rendering](design/design-related-concepts/client-side-and-server-side-rendering.md)
   * [Push vs Pull Architectures](design/design-related-concepts/push-vs-pull-architectures.md)
+  * [Cache](design/design-related-concepts/cache.md)
 * [Object-Oriented Design](design/object-oriented-design.md)
 * [Database Design](design/database-design.md)
 * [System Design](design/system-design/README.md)
