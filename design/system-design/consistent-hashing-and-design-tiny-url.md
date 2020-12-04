@@ -103,29 +103,29 @@ For solving single point failure.
 * When data got lost, the system can recover data from other replicas
 * Replica is used as online data service, accepting read requests
 
-### Master - Slave
+### Master-Slave
 
-* Write Ahead Log
-  * Any operations on SQL database will recorded as log
+* Write-Ahead Log
+  * Any operations on SQL database will be recorded as log
     * for example, data A is changed from C to D at time B
-  * Slave tells master that it is alive
-  * Every time there's operation on master, it will ask slave to read log
-  * It has delay when changes reflected on slave
+  * Slave tells the master that it is alive
+  * Every time there's operations on the master node, it will ask the slave to read the log
+  * It has a delay when changes are reflected on the slave
 * Mater is down
   * Promote one slave into a master, accepting read + write
-  * May cause data lost and inconsistency
+  * May result in cause data loss and inconsistency
 * Disadvantages
   * Write operations are not amortized
-    * But can be resolved by sharding, multiple machines for write
-  * There's delay between write operations reflected in slave
-    * But when you want to get a number that is not necessary to be that accurate, like upvotes, you can read your data from slave
+    * But can be **resolved by sharding**, **multiple machines for write**
+  * There's a delay for write operations to be reflected in slave
+    * But when you want to get a number that is not necessary to be that accurate, like upvotes, you can read your data from the slave
 
 #### SQL vs NoSQL in Replica
 
 SQL
 
 * built-in replica mechanism is Mater / Slave
-* manual replica mechanism is to store three copies on ring of consistent hashing
+* manual replica mechanism is to store three copies on a ring of consistent hashing
 
 NoSQL
 
@@ -134,7 +134,7 @@ NoSQL
 Query Data
 
 1. if the data requested do not need to be accurate, then it broadcasts the request to all nodes, and get the data from the server that responded quickest.
-2. if the data requested needs to be accurate, then it broadcasts the request to all nodes, and wait for at least two nodes return data
+2. if the data requested needs to be accurate, then it broadcasts the request to all nodes, and wait for at least two nodes to return data and compare
 
 ## Tiny / Short URL
 
