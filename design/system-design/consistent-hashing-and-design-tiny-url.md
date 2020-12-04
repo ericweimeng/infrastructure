@@ -85,6 +85,8 @@ For solving single point failure.
 
 {% embed url="https://medium.com/pinterest-engineering/sharding-pinterest-how-we-scaled-our-mysql-fleet-3f341e96ca6f" %}
 
+[https://medium.com/@jeeyoungk/how-sharding-works-b4dec46b3f6](https://medium.com/@jeeyoungk/how-sharding-works-b4dec46b3f6)
+
 {% embed url="https://dzone.com/articles/challenges-of-sharding-mysql" %}
 
 ## Backup vs Replica
