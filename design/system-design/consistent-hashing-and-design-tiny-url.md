@@ -63,7 +63,7 @@ For solving single point failure.
 
 ### Consistent Hashing
 
-* Treat the entire interval as a ring
+* Treat the entire intervals as a ring
 * There are  2\*\*64 - 1 points on this ring representing either a machine or a data
 * Micro shards / virtual nodes
   * One physical machine maps to 1000 micro shards or virtual nodes
