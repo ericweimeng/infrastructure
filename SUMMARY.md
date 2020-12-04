@@ -30,6 +30,7 @@
 ## Design
 
 * [Design Related Concepts](design/design-related-concepts/README.md)
+  * [Load Balancer](design/design-related-concepts/load-balancer.md)
   * [API Gateway](design/design-related-concepts/api-gateway.md)
   * [Client Side & Server Side Rendering](design/design-related-concepts/client-side-and-server-side-rendering.md)
   * [Push vs Pull Architectures](design/design-related-concepts/push-vs-pull-architectures.md)
