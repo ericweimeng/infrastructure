@@ -39,6 +39,7 @@
 * [Object-Oriented Design](design/object-oriented-design.md)
 * [Database Design](design/database-design.md)
 * [System Design](design/system-design/README.md)
+  * [Anatomy of System Design Interview](design/system-design/anatomy-of-system-design-interview.md)
   * [Location-Based System](design/system-design/location-based-system/README.md)
     * [Designing Yelp or Nearby Friends](design/system-design/location-based-system/designing-yelp-or-nearby-friends.md)
     * [Designing Uber backend](design/system-design/location-based-system/designing-uber-backend.md)

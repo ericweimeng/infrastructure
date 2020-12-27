@@ -167,6 +167,8 @@ Refresh-ahead can result in reduced latency vs read-through if the cache can acc
 * Cache invalidation is a difficult problem, there is additional complexity associated with when to update the cache.
 * Need to make application changes such as adding Redis or memcached.
 
+### HTTP Caching
+
 #### Source\(s\) and further reading
 
 * [From cache to in-memory data grid](http://www.slideshare.net/tmatyashovsky/from-cache-to-in-memory-data-grid-introduction-to-hazelcast)
