@@ -10,7 +10,7 @@
   * started with a diagram with very basic components
     * single server
     * multiple servers
-    * * walk through the use cases
+    * walk through the use cases
 
 ![Single Server](../../.gitbook/assets/wechat-image_20201224132916.png)
 
