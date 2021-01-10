@@ -5,7 +5,6 @@
 ## AWS
 
 * [Cloud](aws/cloud.md)
-* [AWS Security Essentials](aws/aws-security-essentials.md)
 * [SQS](aws/sqs.md)
 
 ## Web Securities <a id="security"></a>
@@ -99,4 +98,9 @@
 * [Bash](unix-linux/bash/README.md)
   * [Grep](unix-linux/bash/grep.md)
 * [Untitled](unix-linux/untitled.md)
+
+## AWS <a id="aws-1"></a>
+
+* [AWS developer](aws-1/aws-developer/README.md)
+  * [‌AWS Global Infrastructure and Compliance](aws-1/aws-developer/aws-security-essentials.md)
 
