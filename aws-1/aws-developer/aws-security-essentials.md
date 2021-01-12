@@ -106,6 +106,29 @@
 
 * Send a disk or a whole bunch of disks to amazon
 
+#### MDS
+
+* Data migration services
+* It allows you to migrate on-Premise databases to the AWS cloud or databases that are already in AWS cloud to other places
+
+#### Server Migration Services \(SMS\)
+
+* Same as what MDS does but it targets at virtual machines
+
+### Analytics
+
+#### Athena
+
+* Allows you to run SQL queries on S3
+
+#### EMR
+
+* Elastic Mapper Reducer
+
+#### Cloud Search
+
+#### Elastic Search
+
 ## Endpoints
 
 * AWS provides several different ways to connect to its services
