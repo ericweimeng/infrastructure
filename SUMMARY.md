@@ -104,3 +104,8 @@
 * [AWS developer](aws-1/aws-developer/README.md)
   * [‌AWS Global Infrastructure and Compliance](aws-1/aws-developer/aws-security-essentials.md)
 
+## Random notes
+
+* [Firewalls](random-notes/firewalls.md)
+* [Uncategorized](random-notes/uncategorized.md)
+
