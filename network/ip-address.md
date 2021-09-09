@@ -140,3 +140,13 @@ With CIDR, a network of IP addresses is allocated in 1-bit increments as opposed
 
 With an introduction of CIDR addressing scheme, IP addresses are more efficiently allocated to ISPs and customers; and hence there is less risk of IP addresses running out anytime soon. For detailed specification on CIDR, please review RFC 1519. With introduction of additional gaming, medical, applicance and telecom devices requiring static IP addresses in addition to more than 6.5 billion \(July 2006 est.\) world population, the IPv4 addresses with CIDR addressing scheme will eventually run out. To solve shortage of IPv4 addresses, the IPv6 \(128-bit\) address scheme was introduced in 1993.
 
+## Notes
+
+* 主机ID全为0的地址：特指某个网段，比如：192.168.10.0 255.255.255.0，指192.168.10.0网段。
+* 主机ID全为1的地址：特指该网段的全部主机，比如：192.168.10.255，如果你的计算机发送数据包使用主机ID全是1的IP地址，数据链层地址用广播地址FF-FF-FF-FF-FF-FF。
+* 127.0.0.1：是本地环回地址，指本机地址，一般用来测试使用。回送地址\(127.x.x.x\)是本机回送地址\(Loopback Address\)，即主机IP堆栈内部的IP地址。
+* 169.254.0.0：169.254.0.0-169.254.255.255实际上是自动私有IP地址。
+* **0.0.0.0：如果计算机的IP地址和网络中的其他计算机地址冲突，使用ipconfig命令看到的就是0.0.0.0，子网掩码也是0.0.0.0。**
+
+![](../.gitbook/assets/special-ips.png)
+
