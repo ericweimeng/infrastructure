@@ -8,12 +8,12 @@
 * [Cloud](aws/cloud.md)
 * [SQS](aws/sqs.md)
 
-## Web Securities <a id="security"></a>
+## Web Securities <a href="#security" id="security"></a>
 
-* [Cross-site Request Forgery \(CSRF\)](security/csrf.md)
-* [Cross-Site Scripting \(XSS\)](security/cross-site-scripting-xss.md)
+* [Cross-site Request Forgery (CSRF)](security/csrf.md)
+* [Cross-Site Scripting (XSS)](security/cross-site-scripting-xss.md)
 * [Authentication](security/authentication/README.md)
-  * [Authentication in SPA \(ReactJS and VueJS\) the right way](security/authentication/authentication-in-spa-reactjs-and-vuejs-the-right-way.md)
+  * [Authentication in SPA (ReactJS and VueJS) the right way](security/authentication/authentication-in-spa-reactjs-and-vuejs-the-right-way.md)
 
 ## Network
 
@@ -47,7 +47,7 @@
     * [API Design Pattern](design/system-design/api/api-design-pattern.md)
     * [Designing an API Rate Limiter](design/system-design/api/designing-an-api-rate-limiter.md)
   * [Distributed File System](design/system-design/distributed-file-system/README.md)
-    * [Designing Dropbox \(Grokking\)](design/system-design/distributed-file-system/designing-dropbox.md)
+    * [Designing Dropbox (Grokking)](design/system-design/distributed-file-system/designing-dropbox.md)
     * [Google File System](design/system-design/distributed-file-system/distributed-systems.md)
     * [Dropbox](design/system-design/distributed-file-system/dropbox.md)
     * [Google Drive](design/system-design/distributed-file-system/google-drive.md)
@@ -71,7 +71,7 @@
   * [Designing Typeahead Suggestion](design/system-design/designing-typeahead-suggestion.md)
   * [Designing Twitter Search](design/system-design/designing-twitter-search.md)
   * [Designing a Web Crawler](design/system-design/designing-a-web-crawler.md)
-  * [Design Ticketmaster \(\*New\*\)](design/system-design/design-ticketmaster-new.md)
+  * [Design Ticketmaster (\*New\*)](design/system-design/design-ticketmaster-new.md)
   * [Additional Resources](design/system-design/additional-resources.md)
 * [System Design Notes and Summary](design/system-design-notes-and-summary/README.md)
   * [Design the Twitter](design/system-design-notes-and-summary/design-the-twitter.md)
@@ -97,10 +97,13 @@
 ## Unix/Linux
 
 * [Bash](unix-linux/bash/README.md)
+  * [Vi/Vim](unix-linux/bash/vi-vim.md)
   * [Grep](unix-linux/bash/grep.md)
 * [Environment Variable](unix-linux/untitled.md)
+* [Process](unix-linux/process/README.md)
+  * [Create, Monitor and Kill](unix-linux/process/create-monitor-and-kill.md)
 
-## AWS <a id="aws-1"></a>
+## AWS <a href="#aws-1" id="aws-1"></a>
 
 * [AWS developer](aws-1/aws-developer/README.md)
   * [‌AWS Global Infrastructure and Compliance](aws-1/aws-developer/aws-security-essentials.md)
@@ -113,4 +116,3 @@
 ## Curl
 
 * [11 cURL Command Usages](curl/11-curl-command-usages.md)
-
