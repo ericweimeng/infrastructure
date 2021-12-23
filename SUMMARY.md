@@ -102,6 +102,8 @@
 * [Environment Variable](unix-linux/untitled.md)
 * [Process](unix-linux/process/README.md)
   * [Create, Monitor and Kill](unix-linux/process/create-monitor-and-kill.md)
+* [Kernel](unix-linux/kernel.md)
+* [Vi/Vim](unix-linux/vi-vim.md)
 
 ## AWS <a href="#aws-1" id="aws-1"></a>
 
